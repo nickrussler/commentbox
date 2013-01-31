@@ -35,7 +35,9 @@ Other users are notified on new comments, replies and when other users type.
 
 ## First Steps
 
-Simply deploy the demo project in any AS.
+Create the needed datasource(commentboxDS) in the configs of your AS or rename the used datasource to one of yours (in persistence.xml).
+
+Then simply deploy the demo project in any AS with eclipse or your IDE of choice.
 
 In case of JBoss you need to adjust the standalone.xml to support atmosphere:
 
