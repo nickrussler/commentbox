@@ -36,7 +36,9 @@ Simply deploy the demo project in any AS.
 In case of JBoss you need to adjust the standalone.xml to support atmosphere:
 
 change the line:
+
 `<subsystem xmlns="urn:jboss:domain:web:1.1" native="false" [...]>`
 
 to:
+
 `<subsystem xmlns="urn:jboss:domain:web:1.1" native="true" [...]>`
