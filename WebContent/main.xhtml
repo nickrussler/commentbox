@@ -1,0 +1,115 @@
+<ui:composition template="/WEB-INF/template/base_template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:wb="http://whitebyte.info/components"
+	xmlns:wbcomposites="http://java.sun.com/jsf/composite/composites">
+	
+	<ui:define name="metadata">
+		<f:metadata>
+		    <f:viewParam name="dummy"/>
+		    <f:event type="preRenderView" listener="#{main.load}"/>
+		</f:metadata>
+	</ui:define>
+	
+	<ui:define name="navigation_content">
+		<ul id="menu-menu">
+			<li class="current-menu-item menu-item">
+				<a href="#{userSession.MAIN_WEBSITE_URL}">
+					<span class="navLink">
+						Home
+					</span>
+				</a>
+			</li>
+			<li class="menu-item">
+				<a href="#{userSession.MAIN_WEBSITE_URL}about">
+					<span class="navLink">
+						About Us
+					</span>
+				</a>
+			</li>
+		</ul>
+	</ui:define>
+
+	<ui:define name="content">
+		<p:outputPanel style="display: block;" id="selectedPanel">	
+			<div class="ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all" style="width: 944px;height: 27px;padding: 5px 12px 5px 12px;margin-top: -6px;margin-bottom:10px;">
+				<div style="float:left;font-size:14px; line-height: 24px;">
+					Home
+				</div>
+			 
+					
+				<div style="float:right;">
+					
+					<h:form id="filterForm">
+						<p:selectOneMenu id="popularity"  style="margin-left:10px;"
+							value="#{main.popularity_select}" onchange="filterForm.submit();void(0);" immediate="true">
+							<f:selectItem itemLabel="New" itemValue="1" />
+							<f:selectItem itemLabel="Popular" itemValue="2" />	
+						</p:selectOneMenu>						
+					</h:form>				
+				</div>	
+				<div style="float:right;font-size:14px; line-height: 24px;">
+					Order by: 
+				</div>
+			</div>
+			
+			<p:outputPanel id="all_articles" style="display: block;margin-top: 7px;">
+				<ui:repeat var="article" value="#{main.selectedArticles}" varStatus="status">
+				<div class="article article2">
+					<div class="top">
+						<div class="left">
+							<div style="height: 27px;overflow: hidden; padding-top: 5px;">
+							<h:form id="likeForm2">
+								<div style="float: left;vertical-align:top;height:30px;">								
+										<div style="float: left; font-size: 29px;font-weight:bold; color: #CF3232; margin-top: -6px;min-width:49px;"><h:outputText id="likeCount2" value="#{article.likecountPre}"/> </div>							
+ 	
+										<p:commandLink update="likeCount2" actionListener="#{main.vote(article.article_id, true, false)}"><h:graphicImage style="border: 0;margin-left: 13px" library="images" name="thumb_up.png" /></p:commandLink>
+										<p:commandLink update="likeCount2" actionListener="#{main.vote(article.article_id, false, false)}"><h:graphicImage style="border: 0;margin-left: 5px" library="images" name="thumb_down.png" /></p:commandLink>
+								</div>
+								</h:form>
+							</div>
+							<div class="title"><h1><a class="titlelink" href="#{userSession.MAIN_WEBSITE_URL}project/#{article.article_id}/#{article.title2}/">#{article.title}</a></h1></div>
+							<div class="details"><h:graphicImage library="images" name="user_9x12.png" styleClass="detailsPic" /> User: #{empty article.username ? 'Anonymous' : article.username}  -  
+								<strong>
+									(<h:outputText value="#{article.creation_time}">
+										<f:converter converterId="org.ocpsoft.PrettyTimeConverter"/>
+									</h:outputText>)
+								</strong>
+							</div>
+							<div class="description" style="max-height: 80px; overflow: hidden;"><h:outputText value="#{article.articletext}" escape="false"/></div>
+						</div>
+						
+						<div class="rightPos">
+							<div style="width: 150px; height: 0px"></div>
+							<p:outputPanel rendered="#{not (empty article.photofilepath)}">
+								<div class="thumbnail"><a rel="nofollow" href="#{article.websitelink}" target="_blank"><h:graphicImage value="/image/#{article.photofilepath}" /></a></div>
+							</p:outputPanel>
+							<p:outputPanel rendered="#{not (empty article.websitelink)}">
+								<div><a class="gotowebsitebutton" rel="nofollow" href="#{article.websitelink}" target="_blank">Website</a></div>
+							</p:outputPanel>
+						</div>			
+					</div>
+					<p:separator />
+					<h:form id="footerForm2">			
+						<div class="footer">
+							<ul>
+								<li class="comment"><h:graphicImage class="footer_icons" library="images" name="chat_alt_fill_12x12.png" /><a href="#{userSession.MAIN_WEBSITE_URL}project/#{article.article_id}/#{article.title2}/#comments">Comments (<h:outputText id="commentCountOutputText" value="#{article.commentcount}" />)</a></li>
+							</ul>
+						</div>		
+					</h:form>
+				</div>
+				
+				<br/>
+				</ui:repeat>
+				
+				<div class="pagination">
+					<h:outputText value=" #{main.generatePagination()}" escape="false"/>				   
+				</div>
+			</p:outputPanel>
+		</p:outputPanel>
+	</ui:define>
+</ui:composition>

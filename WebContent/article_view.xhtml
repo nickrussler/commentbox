@@ -1,0 +1,102 @@
+<ui:composition 
+	template="/WEB-INF/template/base_template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:wb="http://whitebyte.info/components"
+	xmlns:wbcomposites="http://java.sun.com/jsf/composite/composites">
+
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="dummy" />
+			<f:event type="preRenderView" listener="#{articleView.load}" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="head">
+		<h:outputStylesheet library="css" name="article_view.css" />
+
+		<script>	
+		function buttonsFixWait() {
+			buttonsPressedFix($('#editorForm\\:editor .ui-editor-button'));
+			buttonsPressedFix($('#inlineEditorForm\\:inlineEditor .ui-editor-button'));
+		}
+		</script>
+	</ui:define>
+
+	<ui:define name="content">
+		<p:panel header="Project">
+			<div class="article">
+				<div class="top">
+					<div class="left">
+						<div style="height: 27px; overflow: hidden; padding-top: 5px;">
+							<div style="float: left; vertical-align: top; height: 30px;">
+								<h:form>
+									<div style="float: left; font-size: 29px; font-weight: bold; color: #CF3232; margin-top: -6px; min-width: 49px">
+										<h:outputText id="likeCount" value="#{articleView.articleBean.likecountPre}" />
+									</div>
+									<p:commandLink update="likeCount" actionListener="#{articleView.vote(articleView.articleBean.article_id, true, true)}">
+										<h:graphicImage style="border: 0;margin-left: 13px" library="images" name="thumb_up.png" />
+									</p:commandLink>
+									<p:commandLink update="likeCount" actionListener="#{articleView.vote(articleView.articleBean.article_id, false, true)}">
+										<h:graphicImage style="border: 0;margin-left: 5px" library="images" name="thumb_down.png" />
+									</p:commandLink>
+								</h:form>
+							</div>
+						</div>
+						<div class="title">
+							<h1>#{articleView.articleBean.title}</h1>
+						</div>
+						<div class="details">
+							<h:graphicImage library="images" name="user_9x12.png" styleClass="detailsPic" />
+							User: #{(empty articleView.articleBean.username) ? 'Anonymous' : articleView.articleBean.username} - <strong> (<h:outputText value="#{articleView.articleBean.creation_time}"><f:converter converterId="org.ocpsoft.PrettyTimeConverter" /></h:outputText>)</strong>
+						</div>
+						<div class="description">
+							<h:outputText value="#{articleView.articleBean.articletext}" escape="false" />
+						</div>
+					</div>
+
+					<div class="rightPos">
+						<div style="width: 150px; height: 0px"></div>
+						<p:outputPanel rendered="#{not (empty articleView.articleBean.photofilepath)}">
+							<div class="thumbnail">
+								<a rel="nofollow" href="#{articleView.articleBean.websitelink}" target="_blank"><h:graphicImage value="/image/#{articleView.articleBean.photofilepath}" /></a>
+							</div>
+						</p:outputPanel>
+						<p:outputPanel rendered="#{not (empty articleView.articleBean.websitelink)}">
+							<div>
+								<a class="gotowebsitebutton" rel="nofollow" href="#{articleView.articleBean.websitelink}" target="_blank">Website</a>
+							</div>
+						</p:outputPanel>
+					</div>
+				</div>
+				<p:separator />
+				<h:form id="footerForm">
+					<div class="footer">
+						<ul>
+							<li class="comment"><h:graphicImage class="footer_icons" library="images" name="chat_alt_fill_12x12.png" /><a onclick="$.scrollTo('#comments', 400)" href="javascript:void(0)" rel="nofollow">Comments (<h:outputText id="commentCountOutputText" value="#{articleView.commentCount}" />)
+							</a></li>
+							<li class="edit"><h:graphicImage class="footer_icons" library="images" name="pen_12x12.png" /><a href="#{userSession.MAIN_WEBSITE_URL}edit/#{articleView.articleBean.article_id}/">Edit</a></li>
+							<li class="leave-comment"><h:graphicImage class="footer_icons" style="top: -1px;" library="images" name="comment_alt1_fill_12x9.png" /><a onclick="$.scrollTo('#editorForm\\:editor', 400);" href="javascript:if(registration_dialogVar){registration_dialogVar.show();};void(0)" rel="nofollow">Leave comment</a></li>
+						</ul>
+					</div>
+				</h:form>
+			</div>
+		</p:panel>
+
+		<p:panel id="comments" style="margin-top: 9px">
+			<div class="comments">			
+				<wbcomposites:commentBox contextID="#{articleView.article_id}" comments="#{articleView.comments}" currentPage="#{articleView.commentsPage}" commentCount="#{articleView.rootcommentCount}" commentsPerPage="#{articleView.commentsPerPage}" currentUserID="#{userSession.user_idAsString}" currentUserUsername="#{userSession.username}" currentUserAvatarUrl="/image/#{userSession.avatar_filename}" onFetchNewComments="#{articleView.onFetchNewComments}" onFetchNewAnswers="#{articleView.onFetchNewAnswers}" onCreateComment="#{articleView.onCreateComment}" onEditComment="#{articleView.onCommentEdit}" onCommentDelete="#{articleView.onCommentDelete}" onCommentLike="#{articleView.onCommentLike}" onCommentSpam="#{articleView.onCommentSpam}" onPageChange="#{articleView.onPageChange}"/>
+			</div>
+		</p:panel>
+
+		<script>
+			$(function(){
+				buttonsFixWait();
+			});
+		</script>
+	</ui:define>
+</ui:composition>

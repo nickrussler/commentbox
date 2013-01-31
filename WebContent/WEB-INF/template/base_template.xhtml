@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<ui:insert name="metadata" />
+
+<h:head>
+	<link rel="icon" type="image/png" href="#{resource['images:favicon.png']}" />
+
+	<title><ui:insert name="title">Default Title</ui:insert></title>
+
+	<h:outputStylesheet library="css" name="menu.css" />
+	<h:outputStylesheet library="css" name="general.css" />
+	<h:outputStylesheet library="css" name="article_view.css"  />
+	<h:outputStylesheet library="css" name="login.css"  />
+	
+	<h:outputScript library="js" name="general.js" target="body" />
+	<h:outputScript library="js" name="login.js" target="body"/>
+	<h:outputScript library="js" name="jquery.scrollTo-1.4.3.1-min.js" target="body" />
+	
+	<!-- This avoids the expiration of xhtml's -->
+	<meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=#{userSession.MAIN_WEBSITE_URL}" />
+
+	<ui:insert name="head" />
+</h:head>
+
+<h:body>
+	<p:growl id="growl" showDetail="true" sticky="true" globalOnly="true" escape="false" autoUpdate="true" widgetVar="growlWidget" />
+
+	<div class="wrapper">
+		<div class="header">
+			<div id="header" class="mainHeader">
+
+				<!-- Registration Dialog BEGIN -->
+				<p:dialog id="registration_dialog" header="Registration" modal="true" draggable="false" widgetVar="registration_dialogVar" resizable="false" rendered="#{not userSession.loggedIn}">
+					<pe:tooltip forSelector=".requiredStar"  value="Required" showEffect="fadeIn" hideEffect="fadeIn"/>  		
+					 <p:outputPanel id="panel_registration">	 
+						<h:form id="register_form">	 
+							<p:panelGrid columns="3" styleClass="ui-panelgrid2">
+								<p:outputPanel>
+									<h:outputLabel style="font-weight: bold;" value="Username: " for="register_username"/>
+									<label class="requiredStar" > *</label>
+								</p:outputPanel>
+								<p:inputText id="register_username" value="#{registration.registrationBean.username}">
+									<p:ajax event="keyup" update="register_username_messages_panel" />
+									<f:validator validatorId="customvalidators.UsernameValidator" />
+								</p:inputText>
+								
+								<p:outputPanel id="register_username_messages_panel">
+									<h:graphicImage id="register_username_messages" library="images" name="#{userSession.hasMessageForClientId('register_form:register_username') ? 'cross.png' : 'accept.png'}"/>	
+									<pe:tooltip for="register_username_messages" myPosition="top center" atPosition="bottom center"><h:message for="register_username"/></pe:tooltip>
+								</p:outputPanel>
+								
+								<p:outputPanel>
+									<h:outputLabel style="font-weight: bold;" value="Email:" for="register_email"/>
+									<label class="requiredStar" > *</label>
+								</p:outputPanel>
+								<p:inputText id="register_email" value="#{registration.registrationBean.email}">
+									<p:ajax event="keyup" update="register_email_messages_panel"/>
+									<f:validator validatorId="customvalidators.EmailValidator" />
+								</p:inputText>
+								
+								<p:outputPanel id="register_email_messages_panel">
+									<h:graphicImage id="register_email_messages" library="images" name="#{userSession.hasMessageForClientId('register_form:register_email') ? 'cross.png' : 'accept.png'}"/>			
+									<pe:tooltip for="register_email_messages" myPosition="top center" atPosition="bottom center"><h:message for="register_email"/></pe:tooltip>
+								</p:outputPanel>
+								
+								<p:outputPanel>
+									<h:outputLabel style="font-weight: bold;" value="Password:" for="register_password1"/> 
+									<label class="requiredStar" > *</label>
+								</p:outputPanel>
+								<p:password id="register_password1" value="#{registration.registrationBean.password}" feedback="true" inline="true">
+									<p:ajax event="keyup" update="register_password_messages_panel" />
+									<f:validator validatorId="customvalidators.PasswordValidator" />
+								</p:password>
+								
+								<p:outputPanel id="register_password_messages_panel">
+									<h:graphicImage id="register_password_messages" library="images" name="#{userSession.hasMessageForClientId('register_form:register_password1') || userSession.hasMessageForClientId('register_form:register_password2') ? 'cross.png' : 'accept.png'}"/>				
+									<pe:tooltip for="register_password_messages" myPosition="top center" atPosition="bottom center"><h:message for="register_password1"/><h:message for="register_password2"/></pe:tooltip>
+								</p:outputPanel>
+								
+								<p:outputPanel>
+									<h:outputLabel style="font-weight: bold;" value="Password (repeat):" for="register_password2"/>
+									<label class="requiredStar" > *</label>
+								</p:outputPanel>
+								<p:password id="register_password2" value="#{registration.registrationBean.password_repeat}" required="true" requiredMessage="">
+									<p:ajax event="keyup" update="register_password_messages_panel" process="@form"/>
+								</p:password>
+								<h:outputText />
+								
+								<p:commandButton value="Register" actionListener="#{registration.register()}" update="register_form"/>
+								<h:outputText />
+								
+							</p:panelGrid>		 
+											
+						</h:form>
+					</p:outputPanel>
+				</p:dialog>
+				<!-- Registration Dialog END -->
+			
+				<div id="bar">
+					<div id="wrapper">
+						<header>
+							<div id="headerTop">
+								<div id="headerContent">
+									<div style="height: 140px; position: relative">
+										<div>
+											<h:graphicImage library="images" name="banner.png" style="position: absolute;height: 148px;cursor:pointer;" onclick="javascript:document.location.href='#{userSession.MAIN_WEBSITE_URL}';" />
+										</div>
+										
+										<!-- Login/Logout container BEGIN -->
+										<div id="loginContainer">																				
+											<p:panel id="login_panel1_id" rendered="#{not userSession.loggedIn}" styleClass="aPanel" >
+												<a style="margin-left:2px;" rel="nofollow" href="javascript:void(0)" id="loginButton"><span>Login  </span></a>
+												<a style="margin-left:2px;" rel="nofollow" href="javascript:void(0)" onclick="registration_dialogVar.show();" id="registerButton"><span>Register</span></a>
+												
+												<div id="loginBox">
+													<h:form id="loginForm" method="post" action="main.xhtml">
+														<fieldset id="body">
+															<fieldset>
+																<label for="email">Username (or Email-Address):</label>
+																<h:inputText  value='#{navigation.loginBean.username}'  id="email" />
+															</fieldset>
+															<fieldset>
+																<label for="password">Password:</label>
+																<h:inputSecret value='#{navigation.loginBean.password}' id="password" />
+															</fieldset>
+															
+															<p:commandButton styleClass="loginbutton" style="float:left;margin-right:8px;width:62px;" id="login"  ajax="false" value="Login" action="#{navigation.login()}" />
+														</fieldset>
+														<span><a href="#"> </a></span>
+													</h:form>
+												</div>
+											</p:panel>
+											
+											<p:panel id="login_panel2_id" rendered="#{userSession.loggedIn}" styleClass="aPanel4" >
+												<a  href="#{userSession.MAIN_WEBSITE_URL}logout" id="registerButton"><span>Logout</span><em></em></a>
+											</p:panel>
+											
+										</div>
+										<!-- Login/Logout container END -->
+									</div>
+								</div>
+							</div>
+
+							<div id="headerNav" style="height:37px;border:0;background: #999; box-shadow: 0 5px 3px rgba(0, 0, 0, 0.13), 0 -1px 0 rgba(0, 0, 0, 0.01) inset;">
+								<table class="navtable">
+									<tr>
+										<td style="width: 779px" valign="top">
+											<nav id="menu1" class="clearfix mainNav">
+												<div class="menu-menu-container">
+													<ui:insert name="navigation_content">
+														<ul id="menu-menu">
+															<li class="menu-item">
+																<a href="#{userSession.MAIN_WEBSITE_URL}">
+																	<span class="navLink">
+																		Home
+																	</span>
+																</a>
+															</li>
+															<li class="menu-item">
+																<a href="#{userSession.MAIN_WEBSITE_URL}about">
+																	<span class="navLink">
+																		About Us
+																	</span>
+																</a>
+															</li>
+														</ul>
+													</ui:insert>
+												</div>
+											</nav>
+
+										</td>
+										<td style="width: 10px" valign="top"></td>
+										<td style="width: 181px" valign="top">
+											<div class="mainNav3">
+												<h:form style="height: 100%; margin: 0px; padding: 0px;">
+													<a class="addNewWebsiteButton" href="#{userSession.MAIN_WEBSITE_URL}add/">
+														<span style="display: inline; font-size: 27px; top: 4px; position: relative; margin-right: -4px;">+</span>
+														<span style="margin-top: 7px; display: inline; line-height: 44px; padding-right: 4px; font-weight: bold;">Add new Project</span>
+													</a>
+												</h:form>
+											</div> 
+											<pe:tooltip showEffect="fadeIn" hideEffect="fadeIn" forSelector=".mainNav3" myPosition="right center" atPosition="left center">  
+								    			Add your Project so others can rate and discuss it
+											</pe:tooltip>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</header>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="content">
+			<div id="content" class="mainContent">
+				<ui:insert name="content">Default Content</ui:insert>
+			</div>
+		</div>
+
+		<br />
+
+		<div class="main_footer">
+			<div style="box-shadow: 0 3px 8px rgba(100, 100, 100, 0.8); border-bottom: 3px black solid;"></div>
+			<div id="footer_content">
+				Copyright &#169; 2012 Team Rot | <a href="#{userSession.MAIN_WEBSITE_URL}disclaimer/">Disclaimer</a>
+			</div>
+		</div>
+	</div>
+</h:body>
+</html>

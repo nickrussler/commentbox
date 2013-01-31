@@ -1,0 +1,234 @@
+.tr-commentbox .comments * {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	line-height: 1;
+	font-family: inherit;
+}
+
+.tr-commentbox .commentTree {
+	width: auto;
+}
+
+.tr-commentbox .numberButton span {
+position: relative;
+top: -3px;
+left: -4px;
+}
+
+.tr-commentbox .ui-editor {
+	-webkit-transition: all .2s ease-in-out;
+	-moz-transition: all .2s ease-in-out;
+	-ms-transition: all .2s ease-in-out;
+	-o-transition: all .2s ease-in-out;
+	transition: all .2s ease-in-out;
+}
+
+.tr-commentbox .ui-tree-container, .tr-commentbox .ui-treenode-label {
+	padding-left: 0;
+}
+
+.tr-commentbox .comment_editor .ui-editor-toolbar {
+	display: none;
+}
+
+.tr-commentbox .comment_editor-height-hack .ui-editor {
+	height: 48px !important;
+}
+
+.tr-commentbox .ui-tree-container {
+	overflow: hidden;
+}
+
+.tr-commentbox .ui-tree-toggler {
+	display: none;
+}
+
+.tr-commentbox .ui-treenode-leaf-icon {
+	display: none;
+}
+
+.tr-commentbox .ui-treenode-children {
+	padding: 0 0 0 58px;
+}
+
+.tr-commentbox .ui-treenode-children .ui-treenode-children {
+	padding: 0 0 0 42px;
+}
+
+.tr-commentbox .ui-treenode-children .ui-treenode-children .ui-treenode-children .ui-treenode-children .ui-treenode-children {
+	padding: 0;
+}
+
+.tr-commentbox .commentEditorDiv {
+	display: none;
+	height: 156px;
+	width: 602px;	
+}
+
+.tr-commentbox .commentEditorDivAnswer {
+	margin-left: 40px;
+	height: 156px;
+	width: 602px;
+}
+
+.tr-commentbox .treenode-dummy {
+	display: none;
+}
+
+.tr-commentbox .clickedLink {
+	color: grey !important;
+	pointer-events: none;
+	cursor: default;
+}
+
+.tr-commentbox .ui-treenode-label.ui-corner-all {
+	cursor: default;
+}
+
+.tr-commentbox .updateRootButton {
+	display: none;
+	margin: 10px 0 5px 0;
+	width: 50%;
+	min-width: 200px;
+	max-width: 500px;
+	background: #ffc62e;
+	border: 0;
+	box-shadow: inset 0 0 0 1px rgba(0,0,0,.2);
+}
+
+.tr-commentbox .newIndicator {
+	width: 5px;
+	height: 50px;
+	background: #ffc62e;
+	border-radius: 1px;
+	float: left;
+	margin-right: 5px;
+	display: none;
+}
+
+.tr-commentbox .ui-treenode-children .newIndicator {
+	height: 35px;
+}
+
+.tr-commentbox .comments {
+	position: relative;
+	font-family: "Helvetica Neue",arial,sans-serif;
+}
+
+.tr-commentbox .comments a {
+	text-decoration: none;
+	-webkit-transition: color linear .1s;
+	-moz-transition: color linear .1s;
+	-ms-transition: color linear .1s;
+	-o-transition: color linear .1s;
+	transition: color linear .1s;
+}
+
+.tr-commentbox .comment {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	overflow: hidden;
+}
+
+.tr-commentbox .username {
+	color: #2E9FFF;
+	font-weight: 600;
+}
+
+.tr-commentbox .bullet {
+	font-size: 75%;
+	color: #CCC;
+	line-height: 1.4;
+}
+.tr-commentbox .comment-text {
+	font-size: 13px;
+}
+
+.tr-commentbox .comment-text, .tr-commentbox .comment-text div {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	width: 500px;
+}
+
+.tr-commentbox .comment-text a {
+	text-decoration: underline;
+}
+
+.tr-commentbox .avatar {
+	float: left;
+	padding-right: 8px;
+	height: 50px;
+	width: 50px;
+}
+
+.tr-commentbox .ui-treenode-children .avatar {
+	height: 35px;
+	width: 35px;
+}
+
+.comments-wrapper .avatar a {
+	display: block;
+}
+
+.comments-wrapper .avatar img {
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	max-height: 50px;
+	max-width: 50px;
+}
+
+.tr-commentbox .ui-treenode-children .avatar img{
+	max-height: 35px;
+	max-width: 35px;
+}
+
+.tr-commentbox .comment .body {
+	float: left;
+}
+
+.tr-commentbox .comment header {
+	color: #777;
+	line-height: 16px;
+	font-size: 12px;
+	position: relative;
+}
+
+.comments .comment header .bullet {
+	padding: 0 3px;
+}
+
+.comments .comment header .info {
+	font-weight: 400;
+	font-size: 95%;
+	color: inherit;
+}
+
+.tr-commentbox .comment footer {
+	font-size: 11px;
+	line-height: 1.85;
+	color: #6C6C6C;
+	margin: 4px 0 0;
+	clear: both;
+}
+
+.tr-commentbox .comment footer menu li {
+	float: left;
+	list-style-type: none;
+	margin: 0 7px 0 0;
+	padding: 0;
+}
+
+.tr-commentbox .comment footer a {
+	color: #999;
+}
+
+.tr-commentbox .comment footer a:hover {
+	color: #666;
+}
+
+.tr-commentbox .comment menu span:first-child .bullet {
+	display: none;
+}

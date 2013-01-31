@@ -1,0 +1,680 @@
+<ui:composition 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:wb="http://whitebyte.info/components">
+
+	<cc:interface componentType="info.whitebyte.component.CommentBox">
+		<cc:attribute name="contextID" type="java.lang.String" />
+		<cc:attribute name="emptyMessage" default="There are no comments yet." type="java.lang.String"/>
+		<cc:attribute name="userNotLoggedIn" default="You need to be logged in to create a comment." type="java.lang.String"/>
+		<cc:attribute name="comments" type="java.util.List" />
+		<cc:attribute name="currentPage" type="java.lang.Long" />
+		<cc:attribute name="commentsPerPage" type="java.lang.Long" />
+		<cc:attribute name="commentCount" type="java.lang.Long" />
+		<cc:attribute name="currentUserID" type="java.lang.Object" />
+		<cc:attribute name="currentUserUsername" type="java.lang.String" />
+		<cc:attribute name="currentUserAvatarUrl" type="java.lang.String" />
+		<cc:attribute name="canEditAll" type="java.lang.Boolean"/>
+		<cc:attribute name="canDeleteAll" type="java.lang.Boolean"/>
+		<cc:attribute name="onFetchNewComments" method-signature="void myAction()" />
+		<cc:attribute name="onFetchNewAnswers" method-signature="void myAction(info.whitebyte.component.commentbox.Comment)" />
+		<cc:attribute name="onCreateComment" method-signature="boolean myAction(info.whitebyte.component.commentbox.Comment)" />
+		<cc:attribute name="onEditComment" method-signature="void myAction(info.whitebyte.component.commentbox.Comment)" />
+		<cc:attribute name="onCommentLike" method-signature="void myAction(info.whitebyte.component.commentbox.Comment)" />
+		<cc:attribute name="onCommentSpam" method-signature="void myAction(info.whitebyte.component.commentbox.Comment)" />
+		<cc:attribute name="onCommentDelete" method-signature="void myAction(info.whitebyte.component.commentbox.Comment)" />
+		<cc:attribute name="onPageChange" method-signature="void myAction(java.lang.Long)" />
+	</cc:interface>
+
+	<cc:implementation>
+	
+	<h:outputStylesheet library="css" name="commentbox.css" />
+	
+	<h:outputScript library="js" name="jquery.cleditor.icon.js"/>
+	<h:outputScript library="js" name="jquery.cleditor.youtube.js"/>
+	
+	<p:outputPanel styleClass="comments-#{cc.id} tr-commentbox comments-wrapper">
+			<p:outputPanel rendered="#{empty cc.attrs.currentUserID}">
+				<b>#{cc.attrs.userNotLoggedIn}</b>				
+				<p:separator />
+			</p:outputPanel>
+	
+			<p:outputPanel id="leaveComment" styleClass="newCommentPanel" rendered="#{not empty cc.attrs.currentUserID}">			
+					<h:form style="overflow: hidden;">	
+					
+						<div class="avatar">
+							<h:graphicImage rendered="#{not empty cc.attrs.currentUserAvatarUrl}" value="#{cc.attrs.currentUserAvatarUrl}" />
+						</div>	
+	
+						<div style="float: left;">						
+							<p:editor disabled="#{empty cc.attrs.currentUserID}" id="editor" styleClass="comment_editor comment_editor-height-hack" value="#{cc.new_comment_editor_text}" controls="bold italic underline strikethrough | icon | image youtube | link unlink | source" height="120" width="600" widgetVar="editor"/>
+				
+							<h:panelGrid styleClass="comment_editorButtons" columns="2" style="margin-top:3px;display: none;">
+								<p:commandButton id="submitButton" styleClass="submitButton" widgetVar="submitButtonVar" value="Save" icon="ui-icon-disk" update=":#{cc.cid(cc.innerWrapper)}" onclick="submitButtonVar.disable();$('.ui-button-text', this).html('Submitting...');initDiffNodes();" oncomplete="submitButtonVar.enable();$('.comments-#{cc.id} .newCommentPanel .submitButton .ui-button-text').html('Save');editor.clear();indicateNewNodes();reShowEditors();showNewRepliesText();" actionListener="#{cc.createComment(cc.attrs.onCreateComment)}" />
+								<p:commandButton id="clearButton" type="button" value="Clear" onclick="editor.clear()" icon="ui-icon-close" />
+							</h:panelGrid>					
+						</div>
+					</h:form>					
+					<p:separator style="margin: 14px 0 4px 0 !important;"/>
+			</p:outputPanel>
+
+			<p:outputPanel binding="#{cc.innerWrapper}" id="innerWrapper">				
+				<p:outputPanel styleClass="emptyMessage" rendered="#{empty cc.attrs.comments}">#{cc.attrs.emptyMessage}</p:outputPanel>			
+				<h:form>
+					<p:commandButton value="Show # new Updates" styleClass="updateRootButton" actionListener="#{cc.fetchNewComments(cc.attrs.onFetchNewComments)}" update=":#{cc.cid(cc.innerWrapper)}" onclick="initDiffNodes();" oncomplete="indicateNewNodes();$('.updateRootButton').fadeOut('fast', function() {reShowEditors();});reShowEditors();" />
+				</h:form>
+				
+				<span class="hiddenNewComments" style="display: none;">0</span>
+				
+				<p:outputPanel styleClass="comments">
+				    <wb:reversedTree value="#{cc.tree}" var="wrapper" id="tree" widgetVar="treeVar" styleClass="commentTree" cache="false" dynamic="true">
+				        <p:treeNode styleClass="treenode-#{wrapper.comment.id} #{wrapper.dummy ? 'treenode-dummy' : 'treenode-unique-id-'.concat(wrapper.comment.id)}">	        
+				        	<p:outputPanel  rendered="#{not wrapper.dummy}">			        	
+								<h:form id="commentForm">
+									<div class="comment comment-#{wrapper.comment.id}" data-commentid="#{wrapper.comment.id}">
+										<div class="newIndicator"></div>
+										<div class="avatar">
+											<a href="#{wrapper.comment.user_profile_url}"><h:graphicImage id="uploadedImage" value="#{wrapper.comment.user_profile_avatar_url}" /></a>
+										</div>
+										<div class="body">
+											<header>											
+												<a href="#{wrapper.comment.user_profile_url}" class="username">#{wrapper.comment.user_username}</a>
+												
+												<span class="bullet">•</span>
+																							
+												<span>
+													<p:outputPanel styleClass="info">
+														<h:outputText value="#{wrapper.comment.modification_time}">
+															<f:converter converterId="org.ocpsoft.PrettyTimeConverter" />
+														</h:outputText>
+													</p:outputPanel>
+												</span>
+												
+												<span class="bullet">•</span>
+												
+												<p:outputPanel id="comment-likecount">
+													<span class="info">Likes: #{wrapper.comment.likecount}</span>
+												</p:outputPanel>
+											</header>
+											
+											<div class="comment-text">
+												<h:outputText value="#{wrapper.comment.comment_text}" escape="false" />
+											</div>
+											
+											<div class="commentEditorDiv" />
+											
+											<footer style="overflow: hidden;">
+												<menu>
+													<p:outputPanel rendered="#{(not empty cc.attrs.currentUserID) and (not empty cc.attrs.onCommentLike)}">
+														<li class="bullet">•</li>
+														<li>
+															<p:commandLink value="Like" update="comment-likecount" styleClass="#{wrapper.comment.deleted ? 'clickedLink' : ''}" onclick="$(this).addClass('clickedLink')" actionListener="#{cc.likeComment(cc.attrs.onCommentLike, wrapper.comment)}" />
+														</li>									
+													</p:outputPanel>
+													
+													<p:outputPanel rendered="#{(not empty cc.attrs.currentUserID) and (not empty cc.attrs.onCommentSpam)}">
+														<li class="bullet">•</li>
+														<li>
+															<p:commandLink value="Spam" styleClass="#{wrapper.comment.deleted ? 'clickedLink' : ''}" onclick="$(this).addClass('clickedLink')" actionListener="#{cc.spamComment(cc.attrs.onCommentSpam, wrapper.comment)}" />
+														</li>
+													</p:outputPanel>								
+																						
+													<p:outputPanel rendered="#{(not empty cc.attrs.currentUserID) and ((wrapper.comment.user_id eq cc.attrs.currentUserID) or cc.attrs.canEditAll)}">
+														<li class="bullet">•</li>
+														<li>
+															<a href="javascript:void(0)" rel="nofollow" class="#{wrapper.comment.deleted ? 'clickedLink' : ''}" onclick="saveCurrentEditComment(#{wrapper.comment.id});showInlineEditor()">Edit </a>
+														</li>
+														
+													</p:outputPanel>
+													
+													<p:outputPanel rendered="#{(not empty cc.attrs.currentUserID) and ((wrapper.comment.user_id eq cc.attrs.currentUserID) or cc.attrs.canDeleteAll)}">
+														<li class="bullet">•</li>
+														<li>
+															<p:commandLink value="Delete" styleClass="#{wrapper.comment.deleted ? 'clickedLink' : ''}" onclick="deleteComment(#{wrapper.comment.id})" actionListener="#{cc.deleteComment(cc.attrs.onCommentDelete, wrapper.comment)}" />
+														</li>
+													</p:outputPanel>
+													
+													<p:outputPanel rendered="#{not empty cc.attrs.currentUserID}">
+														<li class="bullet">•</li>
+														<li>
+															<a href="javascript:void(0)" rel="nofollow" class="#{wrapper.comment.deleted ? 'clickedLink' : ''}" onclick="saveCurrentAnswerComment(#{wrapper.comment.id});showAnswerEditor();">Reply</a>
+														</li>
+													</p:outputPanel>											
+													
+													<p:outputPanel styleClass="updateAnswersPanel updateAnswersPanel-#{wrapper.comment.id}" style="display: none;">
+														<li class="bullet">•</li>
+														<li>												
+															<a href="javascript:void(0)" rel="nofollow" class="getReplies" onclick="var commentid = $(this).closest('div.comment').attr('data-commentid');$(comment_id + ' .rcGetAnswersForm').find('[name=\'currentAnswerComment\']').val(commentid);rcGetAnswers();updateNodes(treeVar, $(this).closest('.ui-treenode'));$(this).closest('.updateAnswersPanel').css('display', 'none'); delete newAnswers[commentid];">Show new replies</a>
+														</li>
+													</p:outputPanel>
+													
+													<p:outputPanel styleClass="typingUsers" style="display: none;">													
+														<li class="bullet">•</li>
+														<li>
+															<span class="hiddenUsersTyping" style="display: none;">{}</span>
+															<a># Typing User</a>																
+														</li>
+													</p:outputPanel>
+												</menu>
+											</footer>
+										</div>
+									</div>
+								</h:form>						
+							</p:outputPanel>
+							
+							<p:outputPanel rendered="#{wrapper.dummy}">						
+								<div style="margin-top: 9px;" class="commentAnswerDivWrapper">									
+									<div class="avatar">
+										<h:graphicImage rendered="#{not empty cc.attrs.currentUserAvatarUrl}" value="#{cc.attrs.currentUserAvatarUrl}" />
+									</div>	
+																
+									<div class="commentEditorDivAnswer"></div>					
+								</div>						
+							</p:outputPanel>
+				        </p:treeNode>
+				    </wb:reversedTree>
+				</p:outputPanel>
+
+				<p:outputPanel styleClass="cbpaginagtion" rendered="#{cc.attrs.commentsPerPage lt cc.attrs.commentCount}">
+					<p:separator />
+
+					<h:form style="margin-bottom: 0px; text-align: center;">
+						<p:commandButton style="height: 22px;width: 25px;" icon="ui-icon-arrowthickstop-1-w" update=":#{cc.cid(cc.innerWrapper)}" disabled="#{cc.attrs.currentPage == 1}" actionListener="#{cc.pageChange(cc.attrs.onPageChange, 1)}" />
+						<p:commandButton style="height: 22px;width: 25px;" icon="ui-icon-arrowthick-1-w" update=":#{cc.cid(cc.innerWrapper)}" disabled="#{cc.attrs.currentPage == 1}" actionListener="#{cc.pageChange(cc.attrs.onPageChange, cc.attrs.currentPage - 1)}" />					 
+	
+						<p:outputPanel style="margin-left:10px;margin-right:10px;" rendered="#{cc.attrs.currentPage.longValue() lt 3}">
+							<p:commandButton styleClass="numberButton" style="height: 22px;width: 25px;" value="1" update=":#{cc.cid(cc.innerWrapper)}" actionListener="#{cc.pageChange(cc.attrs.onPageChange, 1)}" disabled="#{cc.attrs.currentPage == 1}" />
+							<p:commandButton styleClass="numberButton" style="height: 22px;width: 25px;" value="2" update=":#{cc.cid(cc.innerWrapper)}" actionListener="#{cc.pageChange(cc.attrs.onPageChange, 2)}" disabled="#{cc.attrs.currentPage == 2}" rendered="#{cc.attrs.commentCount ge ((1)*cc.attrs.commentsPerPage)}" />
+							<p:commandButton styleClass="numberButton" style="height: 22px;width: 25px;" value="3" update=":#{cc.cid(cc.innerWrapper)}" actionListener="#{cc.pageChange(cc.attrs.onPageChange, 3)}" disabled="#{cc.attrs.currentPage == 3}" rendered="#{cc.attrs.commentCount ge ((2)*cc.attrs.commentsPerPage)}" />
+							<p:commandButton styleClass="numberButton" style="height: 22px;width: 25px;" value="4" update=":#{cc.cid(cc.innerWrapper)}" actionListener="#{cc.pageChange(cc.attrs.onPageChange, 4)}" rendered="#{cc.attrs.commentCount ge ((3)*cc.attrs.commentsPerPage)}" />
+							<p:commandButton styleClass="numberButton" style="height: 22px;width: 25px;" value="5" update=":#{cc.cid(cc.innerWrapper)}" actionListener="#{cc.pageChange(cc.attrs.onPageChange, 5)}" rendered="#{cc.attrs.commentCount ge ((4)*cc.attrs.commentsPerPage)}" />
+						</p:outputPanel>
+
+						<p:outputPanel style="margin-left:10px;margin-right:10px;" rendered="#{cc.attrs.currentPage.longValue() ge 3}">
+							<p:commandButton styleClass="numberButton" style="height: 22px;width: 25px;" value="#{''.concat(cc.attrs.currentPage.longValue() - 2)}" update=":#{cc.cid(cc.innerWrapper)}" actionListener="#{cc.pageChange(cc.attrs.onPageChange, cc.attrs.currentPage.longValue() - 2)}" />
+							<p:commandButton styleClass="numberButton" style="height: 22px;width: 25px;" value="#{''.concat(cc.attrs.currentPage.longValue() - 1)}" update=":#{cc.cid(cc.innerWrapper)}" actionListener="#{cc.pageChange(cc.attrs.onPageChange, cc.attrs.currentPage.longValue() - 1)}" />
+							<p:commandButton styleClass="numberButton" style="height: 22px;width: 25px;" value="#{''.concat(cc.attrs.currentPage.longValue())}" update=":#{cc.cid(cc.innerWrapper)}" actionListener="#{cc.pageChange(cc.attrs.onPageChange, cc.attrs.currentPage.longValue())}" disabled="true" />
+							<p:commandButton styleClass="numberButton" style="height: 22px;width: 25px;" value="#{''.concat(cc.attrs.currentPage.longValue() + 1)}" update=":#{cc.cid(cc.innerWrapper)}" actionListener="#{cc.pageChange(cc.attrs.onPageChange, cc.attrs.currentPage.longValue() + 1)}" rendered="#{cc.attrs.commentCount ge ((cc.attrs.currentPage + 1)*cc.attrs.commentsPerPage)}" />
+							<p:commandButton styleClass="numberButton" style="height: 22px;width: 25px;" value="#{''.concat(cc.attrs.currentPage.longValue() + 2)}" update=":#{cc.cid(cc.innerWrapper)}" actionListener="#{cc.pageChange(cc.attrs.onPageChange, cc.attrs.currentPage.longValue() + 2)}" rendered="#{cc.attrs.commentCount ge ((cc.attrs.currentPage + 2)*cc.attrs.commentsPerPage)}" />
+						</p:outputPanel>	
+
+						<p:commandButton style="height: 22px;width: 25px;" icon="ui-icon-arrowthick-1-e" update=":#{cc.cid(cc.innerWrapper)}" actionListener="#{cc.pageChange(cc.attrs.onPageChange, cc.attrs.currentPage + 1)}" disabled="#{cc.attrs.commentCount lt (cc.attrs.currentPage*cc.attrs.commentsPerPage)}"/>
+						<p:commandButton style="height: 22px;width: 25px;" icon="ui-icon-arrowthickstop-1-e" update=":#{cc.cid(cc.innerWrapper)}" actionListener="#{cc.pageChange(cc.attrs.onPageChange, cc.lastPage)}" disabled="#{cc.attrs.commentCount lt (cc.attrs.currentPage*cc.attrs.commentsPerPage)}" />
+
+					</h:form>
+
+				</p:outputPanel>
+
+			</p:outputPanel>
+			
+			<h:form id="inlineEditorForm" styleClass="inlineEditorForm" style="height: 0px; overflow: hidden">
+				<p:editor id="inlineEditor" styleClass="commentseditor inlineEditor" value="#{cc.edit_comment_editor_text}" controls="bold italic underline strikethrough | icon | image youtube | link unlink | source" height="120" width="600" widgetVar="inlineEditor" />
+				<p:commandButton id="submitButton" value="Save" icon="ui-icon-disk" actionListener="#{cc.editComment(cc.attrs.onEditComment)}" onclick="submitEdit();initDiffNodes();" oncomplete="inlineEditor.clear();indicateNewNodes();"/>
+				<p:commandButton id="clearButton" type="button" value="Clear" onclick="inlineEditor.clear()" icon="ui-icon-close" />
+				<p:commandButton id="cancelButton" type="button" value="Cancel" onclick="cancelEdit();" icon="ui-icon-close" />
+				<input id="currentEditComment" type="hidden" value="" name="currentEditComment"/>
+			</h:form>
+			
+			<h:form id="answerEditorForm" styleClass="answerEditorForm" style="height: 0px; overflow: hidden">
+				<p:editor id="inlineEditor" styleClass="commentseditor inlineEditor answerEditor" value="#{cc.answer_comment_editor_text}" controls="bold italic underline strikethrough | icon | image youtube | link unlink | source" height="120" width="600" widgetVar="answerEditor" />
+				<p:commandButton id="submitButton" ajax="true" value="Save" icon="ui-icon-disk" update=":#{cc.cid(cc.innerWrapper)}" actionListener="#{cc.answerComment(cc.attrs.onCreateComment)}" onclick="submitAnswer();initDiffNodes();" oncomplete="answerEditor.clear();indicateNewNodes();"/>
+				<p:commandButton id="clearButton" type="button" value="Clear" onclick="answerEditor.clear();" icon="ui-icon-close" />
+				<p:commandButton id="cancelButton" type="button" value="Cancel" onclick="cancelCreateAnswer();" icon="ui-icon-close" />
+				<input id="currentAnswerComment" type="hidden" value="" name="currentAnswerComment"/>
+			</h:form>
+			
+			<h:form styleClass="rcUserTypingForm">
+				<p:remoteCommand id="rc" name="rcUserTyping" actionListener="#{cc.onUserType}" oncomplete="rcUserTyping_callback();" />
+				<input id="currentAnswerComment" type="hidden" value="" name="currentAnswerComment"/>
+			</h:form>
+			
+			<h:form styleClass="rcGetAnswersForm">
+				<p:remoteCommand id="rc" name="rcGetAnswers" actionListener="#{cc.fetchNewAnswers(cc.attrs.onFetchNewAnswers)}" />
+				<input id="currentAnswerComment" type="hidden" value="" name="currentAnswerComment"/>
+			</h:form>
+			
+			<p:socket onMessage="handlePushMessage" channel="/commentboxpush-#{cc.id}-#{cc.attrs.contextID}" autoConnect="true" widgetVar="pushVar"/>
+		</p:outputPanel>
+		<script type="text/javascript">
+		//<![CDATA[	
+			var jsf_id = "#{cc.id}";
+			var comment_id = ".comments-" + jsf_id;
+
+			var isAnswerEditorVisible = false;
+			var isEditEditorVisible = false;
+
+			var resizefunc_edit = function(){};
+			var resizefunc_answer = function(){};
+
+			var oldNodes = new Array();
+
+			var isUserTyping_timestamp = 0;
+
+			var newAnswers = {};
+
+			function repositionEditors() {
+				if (isAnswerEditorVisible) {
+					resizefunc_answer();
+				}	
+				
+				if (isEditEditorVisible) {
+					resizefunc_edit();
+				}
+			}
+
+			$(window).resize(function() {
+				repositionEditors();
+			});
+
+			function initDiffNodes() {
+            	$('.ui-treenode:visible').each(function(){
+            		var str = $(this).attr('class');
+            		var startPos = str.indexOf('treenode-unique-id-');
+            		var endPos = str.indexOf(' ', startPos);
+            		var uniqueID = str.substring(startPos, endPos);
+                	
+            		oldNodes.push(uniqueID);
+                });
+			}
+
+			function indicateNewNodes() {
+				var newNodes = new Array();
+            	$('.ui-treenode:visible').each(function(){
+            		var str = $(this).attr('class');
+            		var startPos = str.indexOf('treenode-unique-id-');
+            		var endPos = str.indexOf(' ', startPos);
+            		var uniqueID = str.substring(startPos, endPos);
+                	
+            		newNodes.push(uniqueID);
+                });
+
+                var diffNodes = $.grep(newNodes, function(n, i) {
+                	  return $.inArray(n, oldNodes) == -1;
+                });
+
+                for (var i = 0; i < diffNodes.length; i++) {
+                	// $('.' + diffNodes[i].replace(/:/g, '\\:')).hide().slideDown();                	
+                    $('.' + diffNodes[i].replace(/:/g, '\\:')).find('.newIndicator').show().fadeOut(10000);
+                }
+			}
+
+			function scrollTo(b){
+				var $elem = $(PrimeFaces.escapeClientId(b));
+				var a = $elem.offset();
+				$("html,body").animate({scrollTop:(a.top - ($(window).height() / 2)) - $elem.height(), scrollLeft:a.left},{easing:"easeInCirc"}, 1000)
+			}
+
+			function isScrolledIntoView(elem){
+				var docViewTop = $(window).scrollTop();
+				var docViewBottom = docViewTop + $(window).height();
+				var elemTop = $(elem).offset().top;
+				var elemBottom = elemTop + 50; // $(elem).height();
+				return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+			}
+
+			function scrollToIfNotInView(elem) {
+				if (!isScrolledIntoView(elem)) {
+					scrollTo($(elem).attr('id'));
+				}
+			}
+
+			function reShowEditors() {
+				if (isAnswerEditorVisible) {
+					showAnswerEditor();
+				}
+
+				if (isEditEditorVisible) {
+					showInlineEditor();
+				}
+			}
+
+			function saveCurrentEditComment(CommentID) {
+				$(comment_id + ' .inlineEditorForm #currentEditComment').attr('value', CommentID);
+			}
+
+			function showInlineEditor() {
+				var comment = $(comment_id + ' .inlineEditorForm #currentEditComment').attr('value');
+					
+				isEditEditorVisible = true;	
+				$(comment_id + ' .comment-text').show();				
+				$(comment_id + ' .commentEditorDiv').hide();				
+				$(comment_id + ' .comment-' + comment + ' .body .comment-text').hide();
+				$(comment_id + ' .comment-' + comment + ' .body .commentEditorDiv').show();
+				resizefunc_edit = function() {
+					$(comment_id + ' .inlineEditorForm').attr('style', '').css($(comment_id + ' .comment-' + comment + ' .body .commentEditorDiv').first().offset()).css('position', 'absolute');
+				};		
+				repositionEditors();													
+				$(comment_id + ' .inlineEditorForm .inlineEditor iframe').contents().find('body').html($(comment_id + ' .comment-' + comment + ' .body .comment-text').html());
+
+				scrollToIfNotInView($(comment_id + ' .commentEditorDiv'));
+			}
+
+			function submitEdit() {
+				var edit_comment_id = $(comment_id + ' #currentEditComment').attr('value');
+				
+				$(comment_id + ' .comment-' + edit_comment_id +' .body .comment-text').html($(comment_id + ' .inlineEditorForm .inlineEditor iframe').contents().find('body').html());
+				cancelEdit();
+			}
+
+			function cancelEdit() {
+				isEditEditorVisible = false;
+				var edit_comment_id = $(comment_id + ' #currentEditComment').attr('value');
+				
+				$(comment_id + ' .inlineEditorForm').attr('style', 'height: 0px; overflow: hidden');
+				$(comment_id + ' .comment-' + edit_comment_id + ' .body .commentEditorDiv').hide();
+				$(comment_id + ' .comment-' + edit_comment_id + ' .body .comment-text').show();
+
+				repositionEditors();
+			}
+
+			function saveCurrentAnswerComment(CommentID) {
+				$(comment_id + ' .answerEditorForm #currentAnswerComment').attr('value', CommentID);
+			}
+
+			function showAnswerEditor() {
+				var comment = $(comment_id + ' .answerEditorForm #currentAnswerComment').attr('value');
+				
+				isAnswerEditorVisible = true;			
+				$(comment_id + ' .treenode-dummy').hide();	
+				$(comment_id + ' .treenode-dummy.treenode-'+ comment).css('display', 'block');
+				resizefunc_answer = function() {
+					$(comment_id + ' .answerEditorForm').attr('style', '').css($(comment_id + ' .treenode-'+ comment +' .ui-treenode-children .commentEditorDivAnswer').last().offset()).css('position', 'absolute');
+				}
+				repositionEditors();
+
+				scrollToIfNotInView($(comment_id + ' .treenode-dummy.treenode-'+ comment));
+			}
+
+			function submitAnswer() {
+				isUserTyping_timestamp = 0;
+				
+				isAnswerEditorVisible = false;
+				var edit_comment_id = $(comment_id + ' #currentAnswerComment').attr('value');
+				
+				$(comment_id + ' .answerEditorForm').attr('style', 'height: 0px; overflow: hidden');
+				$(comment_id + ' .commentAnswerDivWrapper').css('display', 'none');
+				repositionEditors();
+			}
+
+			function cancelCreateAnswer() {	
+				isAnswerEditorVisible = false;			
+				$(comment_id + ' .treenode-dummy').css('display', 'none');
+				$(comment_id + ' .answerEditorForm').attr('style', 'height: 0px; overflow: hidden');
+
+				repositionEditors();
+			}
+
+			function deleteComment(comment) {
+				$(comment_id + ' .comment-' + comment +' .body .comment-text').html('<i>This comment was deleted by the Author</i>');
+			}
+
+			function findIDbySelector(selector) {
+				return $(selector).first().attr('id');
+			}
+
+			function updateNodes(tree, c) {
+			    var a = tree;
+			    if (tree.cfg.dynamic) {
+			        if (tree.cfg.cache && c.children(".ui-treenode-children").children().length > 0) {
+			            tree.showNodeChildren(c);
+			            return
+			        }
+			        if (c.data("processing")) {
+			            PrimeFaces.debug("Node is already being expanded, ignoring expand event.");
+			            return
+			        }
+			        c.data("processing", true);
+			        var b = {
+			            source: tree.id,
+			            process: tree.id,
+			            update: tree.id,
+			            formId: tree.cfg.formId
+			        };
+			        b.onsuccess = function (j) {
+			            var g = $(j.documentElement),
+			                h = g.find("update");
+			            for (var e = 0; e < h.length; e++) {
+			                var l = h.eq(e),
+			                    k = l.attr("id"),
+			                    f = l.text();
+			                if (k == a.id) {
+			                	initDiffNodes();
+				                
+			                    c.children(".ui-treenode-children").html(f);
+
+			                    indicateNewNodes();
+			                    reShowEditors();
+			                    
+			                    a.showNodeChildren(c)
+			                } else {
+			                    PrimeFaces.ajax.AjaxUtils.updateElement.call(tree, k, f)
+			                }
+			            }
+			            PrimeFaces.ajax.AjaxUtils.handleResponse.call(tree, g);
+			            return true
+			        };
+			        b.oncomplete = function () {
+			            c.removeData("processing")
+			        };
+			        b.params = [{
+			            name: tree.id + "_expandNode",
+			            value: a.getRowKey(c)
+			        }];
+			        if (tree.hasBehavior("expand")) {
+			            var d = tree.cfg.behaviors.expand;
+			            d.call(tree, c, b)
+			        } else {
+			            PrimeFaces.ajax.AjaxRequest(b)
+			        }
+			    } else {
+			        tree.showNodeChildren(c);
+			        tree.fireExpandEvent(c)
+			    }
+			}
+
+			function initUserTypingEvents() {
+				$(comment_id + ' .answerEditor iframe').contents().find('body').keyup(function() {
+					isUserTyping_timestamp = new Date().getTime();
+				});
+			}
+
+			function timer() {	
+				var isUserTyping = (new Date().getTime() - isUserTyping_timestamp) < 1000;
+				
+				console.log('User typing: ' + isUserTyping);
+				dropOldTypingUsers();				
+				
+				if (isUserTyping) {										
+					$(comment_id + ' .rcUserTypingForm').find('[name=\'currentAnswerComment\']').val($('.answerEditor').closest('form').find('[name=\'currentAnswerComment\']').val());
+
+					rcUserTyping_callback = function() {
+						setTimeout(timer, 1500);
+					};
+
+					rcUserTyping();					
+				} else {
+					setTimeout(timer, 1500);
+				}
+			}
+
+			function quoteComment(person, content){
+				var stext111='quote_div';
+				var stext222='quote_p';
+				
+				var quoteHTML='<div class="'+stext111+'">'+'<p class="'+stext222+'">'+'<i>Quote</i> - '+person+':'+'</p><div>'+content+'</div></div>';
+				
+				startEditor1();
+				editor.editor.execCommand('inserthtml',quoteHTML+'<div><br/><br/></div>', false);	
+				$($($('.comment_editor').first().find('iframe').contents()[0]).find('body')).animate({ scrollTop: $(document).height() }, 'slow');
+				editor.editor.focus();
+			}
+
+			function editorClickHandler(){
+				cancelEdit();
+				cancelCreateAnswer();
+				
+				var $editorForm = $(comment_id + ' .comment_editor').first();
+				var $editor = $editorForm.find('.ui-editor');
+				$($editorForm.find('iframe').contents()[0]).find('body').html('');
+				$editorForm.removeClass('comment_editor-height-hack');
+				$(this).unbind('click', editorClickHandler);
+				$(comment_id + ' .comment_editorButtons').fadeIn();
+				$editor.find('.ui-editor-toolbar').fadeIn();
+			}
+
+			
+			$(function(){
+				timer();							
+				initUserTypingEvents();
+
+				if ($(comment_id + ' .comment_editor').first().find('textarea').attr('disabled') != 'disabled') {
+					$($(comment_id + ' .comment_editor').first().find('iframe').contents()[0]).bind('click', editorClickHandler);
+				}
+			});
+
+			function isOnFirstPage() {
+				if ($(comment_id + ' .cbpaginagtion button.ui-state-disabled').length == 0) {
+					return true;
+				}
+				
+				return $($(comment_id + ' .cbpaginagtion button.ui-state-disabled')[2]).find('span').html() == '1';
+			}
+
+			function dropTypingUser(type, typingContainer, user) {
+				var $typingContainer = typingContainer;
+
+				var $typingLi = $typingContainer.find('.hiddenUsersTyping');
+				var typing_array = $typingLi.html().split('|');
+
+				var tmp = new Array();
+
+				tmp.push('{}');
+
+				for(var k=0; k < typing_array.length; k++) {
+					if (type == 0) {					
+						if (JSON.parse(typing_array[k])['user']) {
+							if (JSON.parse(typing_array[k])['user'] != user) {
+								tmp.push(typing_array[k]);
+							}
+						}
+					} else if (type == 1) {
+						for( var k=0; k < typing_array.length; k++ ) {
+							if (JSON.parse(typing_array[k])['date']) {
+								if (new Date().getTime() - JSON.parse(typing_array[k])['date'] <  5*1000) {
+									tmp.push(typing_array[k]);
+								}
+							}
+						}
+					}
+				}
+
+				$typingLi.html(tmp.join('|'));
+
+				var typingcount = tmp.length - 1;
+				if (typingcount > 0) {						
+					var typing_message = (typingcount == 1) ? 'One typing User' : typingcount + ' typing Users';
+					$typingContainer.find('a').html(typing_message);
+					$typingContainer.show();
+				} else {
+					$typingContainer.hide();
+				}
+			}
+
+			function dropOldTypingUsers() {
+				var $typingContainer = $(comment_id + ' .typingUsers');
+
+				$typingContainer.each(function() {
+					dropTypingUser(1, $(this));
+				});
+			}
+
+			function showNewRepliesText() {
+				$.each(newAnswers, function(i, val){
+					var $updateAnswersPanel = $(comment_id + ' .comment-' + i + ' .updateAnswersPanel');
+
+					if (val > 0) {
+						var new_reply_message = (val == 1) ? 'Show One new reply' : 'Show ' + val + ' new replies';							
+						$updateAnswersPanel.find('.getReplies').html(new_reply_message);
+						$updateAnswersPanel.fadeIn('slow');
+					} else {
+						$updateAnswersPanel.hide();
+					}
+				});
+			}
+
+			function handlePushMessage(msg) {
+				console.log(msg);
+				
+				var json = JSON.parse(msg);
+				
+				if (json.a) {
+					if (json.a == 'NC') {
+						if (isOnFirstPage()) {
+							var $hiddenNewComments = $(comment_id + ' .hiddenNewComments');
+							var newCommentCount = parseInt($hiddenNewComments.html()) + 1;
+							$hiddenNewComments.html(newCommentCount);
+							
+							var new_comments_message = (newCommentCount == 1) ? 'Show One new Comment' : 'Show ' + newCommentCount + ' new Comments';							
+							$(comment_id + ' .updateRootButton').fadeIn('slow').find('.ui-button-text').html(new_comments_message);
+						}
+					} else if (json.a == 'AC') {
+
+						if (#{not empty cc.attrs.currentUserID ? 'json.u == '.concat(cc.attrs.currentUserID) : false}) {
+							return;
+						}
+
+						if (newAnswers[json.p]) {
+							newAnswers[json.p] = newAnswers[json.p] + 1;
+						} else {
+							newAnswers[json.p] = 1;
+						}
+						
+						dropTypingUser(0, $(comment_id + ' .comment-' + json.p + ' .typingUsers'), json.u);
+						showNewRepliesText();						
+					} else if (json.a == 'T') {
+
+						if (#{not empty cc.attrs.currentUserID ? 'json.u == '.concat(cc.attrs.currentUserID) : false}) {
+							return;
+						}
+						
+						var $typingContainer = $(comment_id + ' .comment-' + json.c + ' .typingUsers');
+						var $typingLi = $typingContainer.find('.hiddenUsersTyping');
+						var typing_array = $typingLi.html().split('|');
+
+						var obj = {};
+						obj['user'] = json.u;
+						obj['date'] = new Date().getTime();
+
+						var found = false;
+						for( var k=0; k < typing_array.length; k++ ) {
+							if (JSON.parse(typing_array[k])['user'] == json.u) {
+								found = true;
+								break;
+							}
+						}
+
+						if (!found) {
+							typing_array.push(JSON.stringify(obj));
+						}
+
+						$typingLi.html(typing_array.join('|'));	
+
+						var typingcount = typing_array.length - 1;
+						if (typingcount > 0) {						
+							var typing_message = (typingcount == 1) ? 'One typing User' : typingcount + ' typing Users';
+							$typingContainer.find('a').html(typing_message);
+							$typingContainer.show();
+						}
+					}
+				}
+			}
+		//]]>
+		</script>
+	</cc:implementation>
+
+</ui:composition>
