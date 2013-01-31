@@ -228,11 +228,11 @@ public class ArticleEdit implements Serializable{
 				
 				if(isNew){
 					articleEAO.create(article);				
-					getArticleViewMessageHandler().addJSFMessage(new JSFMessage(null, "Başarılı İşlem", "Your project was created successfully.", FacesMessage.SEVERITY_INFO));
+					getArticleViewMessageHandler().addJSFMessage(new JSFMessage(null, "Success", "Your project was created successfully.", FacesMessage.SEVERITY_INFO));
 				}
 				if(isEdit){
 					articleEAO.update(article);
-					getArticleViewMessageHandler().addJSFMessage(new JSFMessage(null, "Başarılı İşlem", "Your project was edited successfully.", FacesMessage.SEVERITY_INFO));
+					getArticleViewMessageHandler().addJSFMessage(new JSFMessage(null, "Success", "Your project was edited successfully.", FacesMessage.SEVERITY_INFO));
 				}
 				
 				Utils.RedirectTo(Constants.ARTICLE_VIEW+"?id="+article.getId()+"&"+Constants.RedirectWithoutQuestionmark,true);
