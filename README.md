@@ -4,7 +4,7 @@ This is a jsf components that allows quick realization of a comment functionalit
 
 ![logo](https://raw.github.com/nickrussler/commentbox/master/WebContent/resources/images/banner.png)
 
-## features
+## Features
 
 ### Replies
 
@@ -16,12 +16,12 @@ Other users are notified on new comments, replies and when other users type.
 
 ## Dependencies
 
-### JSF 2.0+
-### Primefaces
-### Primefaces push (Athmosphere framework)
+* JSF 2.0+
+* Primefaces
+* Primefaces push (Athmosphere framework)
 
 ## Why should i use it, i could use some external chat service?
 
-###You keep your data where it belongs, on your server !
-###Also you can (and are allowed to) make modifications to adapt to your special needs.
-###You can connect this component to your own user-system and your users don't need to have an account on your site and an additional account for the external system.
+*You keep your data where it belongs, on your server !
+*Also you can (and are allowed to) make modifications to adapt to your special needs.
+*You can connect this component to your own user-system and your users don't need to have an account on your site and an additional account for the external system.
