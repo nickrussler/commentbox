@@ -4,6 +4,13 @@ This is a jsf component that allows quick realization of a comment functionality
 
 ![logo](https://raw.github.com/nickrussler/commentbox/master/WebContent/resources/images/banner.png)
 
+## Screenshot
+
+![screenshot](https://raw.github.com/nickrussler/commentbox/master/WebContent/resources/images/sample.png)
+
+## Promo Video
+https://www.youtube.com/watch?v=9ZCklu-wI90
+
 ## Features
 
 ### Replies
@@ -13,9 +20,6 @@ You can reply to comments (and reply those, and so on).
 ### Live Features
 
 Other users are notified on new comments, replies and when other users type.
-
-## Promo Video
-https://www.youtube.com/watch?v=9ZCklu-wI90
 
 ## Dependencies
 
@@ -42,7 +46,3 @@ change the line:
 to:
 
 `<subsystem xmlns="urn:jboss:domain:web:1.1" native="true" [...]>`
-
-## Screenshot
-
-![screenshot](https://raw.github.com/nickrussler/commentbox/master/WebContent/resources/images/sample.png)
