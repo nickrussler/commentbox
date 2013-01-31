@@ -35,7 +35,7 @@ Other users are notified on new comments, replies and when other users type.
 
 ## First Steps
 
-Create the needed datasource(commentboxDS) in the configs of your AS or rename the used datasource to one of yours (in persistence.xml).
+Create the needed datasource (commentboxDS) in the configs of your AS or rename the used datasource to one of yours (in persistence.xml).
 
 Then simply deploy the demo project in any AS with eclipse or your IDE of choice.
 
