@@ -42,3 +42,7 @@ change the line:
 to:
 
 `<subsystem xmlns="urn:jboss:domain:web:1.1" native="true" [...]>`
+
+## Screenshot
+
+![screenshot](https://raw.github.com/nickrussler/commentbox/master/WebContent/resources/images/sample.png)
