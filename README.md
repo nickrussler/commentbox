@@ -14,6 +14,9 @@ You can reply to comments (and reply those, and so on).
 
 Other users are notified on new comments, replies and when other users type.
 
+## Promo Video
+https://www.youtube.com/watch?v=9ZCklu-wI90
+
 ## Dependencies
 
 * JSF 2.0+
