@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+encoding//WebContent/WEB-INF/template/base_template.xhtml=UTF-8
+encoding//WebContent/resources/js/general.js=UTF-8
+encoding//src/db/enums/Usertype.java=UTF-8
+encoding//src/view/backingbeans/ArticleEdit.java=UTF-8
+encoding//src/view/backingbeans/ArticleView.java=UTF-8
+encoding//src/view/backingbeans/Main.java=UTF-8
+encoding//src/view/backingbeans/UserSession.java=UTF-8
+encoding/<project>=UTF-8

@@ -1,0 +1,209 @@
+* {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+input:-moz-placeholder {
+    color: #999;
+}
+
+/* Sticky Footer Solution Start */
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+.wrapper {
+    display: table;
+    height: 100%;
+    width: 100%;
+}
+
+.header {
+    display: table-row;
+    height: 183px;
+}
+
+.content {
+    display: table-row;  /* height is dynamic, and will expand... */
+    height: 100%;        /* ...as content is added (won't scroll) */
+}
+
+.main_footer {
+    display: table-row;
+}
+
+/* Sticky Footer Solution End */
+
+/* OVERWRITE PRIMEFACES SECTION START */
+.ui-growl-item-container.ui-state-highlight.ui-corner-all.ui-helper-hidden.ui-shadow {
+	opacity: 1;
+}
+
+.ui-growl-icon-close.ui-icon.ui-icon-closethick {
+	display: block !important;
+}
+
+.ui-icon {
+	background-image: url("/commentbox/faces/javax.faces.resource/images/ui-icons_616161_256x240.png?ln=primefaces-aristo") !important;
+}
+
+.ui-widget-header {
+	background: #D6D6D5 !important;
+}
+
+.ui-separator {
+	border: 0 !important;
+	height: 2px !important;
+	background: #CCC !important;
+	margin-top: 10px !important;
+	margin-bottom: 10px !important;
+}
+
+.ui-panelgrid2 tr,.ui-panelgrid2 td {
+	border: 0 !important;
+}
+
+/* OVERWRITE PRIMEFACES SECTION END */
+
+html, body {
+	font-size: 85%;
+}
+
+html {
+	overflow-y: scroll;
+}
+		
+		
+#footer_content {
+	text-align: center;
+	font-size: 13px;
+	margin: 10px 0 10px 0;
+	color: #585858;
+}
+
+#footer_content a {
+	color: #585858;
+}
+
+.main_footer {
+    background: url("#{resource['images:bg.png']}") repeat scroll 0 0 transparent;
+}
+
+body {
+	background: #d1d2d2 url("#{resource['images:low_contrast_linen.png']}") repeat;
+}
+
+#content {
+	margin-top: 15px;
+}
+
+.noBorders {
+	border: 0 !important;
+}
+
+.mainContent {
+	margin: 0 auto;
+	width: 970px;
+}
+
+.aPanel, .aPanel div{
+    	border: 0 !important;
+    	padding:0px !important;
+    	margin:0px !important;
+}
+	
+.pGrid tr, .pGrid td, .pGrid div {
+    	border: 0;
+    	padding-left:0px;
+    	margin-left:0px;
+}
+
+.titlelink{
+	color: #4F4F4F !important
+}
+	
+.aPanel2{
+    	border: 0 !important;
+    	padding:0px !important;
+    	margin:0px !important;
+}
+.aPanel2 div{
+    	padding-left:0px !important;
+    	padding-right:0px !important;
+}
+
+.aPanel3{
+    	border: 0 !important;
+    	padding:0px !important;
+    	margin:0px !important;
+}
+.aPanel4{
+    	border: 0 !important;
+    	padding:0px !important;
+    	margin:0px !important;
+}
+.aPanel4 div{    	
+    	padding:0px !important;
+    	margin-left:1px !important;
+}
+
+.requiredStar {
+	font-weight: bold;
+	font-size: 25px;
+	color: #CD0A0A;
+ 	position: relative;
+    top: 5px;
+}
+
+.pagination {
+	overflow: hidden;
+	margin-bottom: 5px;
+}
+
+.pagination a,.pagination a:link,.pagination a:visited,.pagination a:active	{
+	text-decoration: none;
+}
+
+.pagination a:hover {
+	background: #D9D9D9;
+	text-decoration: underline;
+}
+
+.pagination span.selected {
+	color: white;
+	background: #BF3E43;
+	padding: 4px 8px;
+	letter-spacing: 0;
+	font-weight: normal;
+	text-transform: uppercase;
+	border-radius: 3px;
+}
+
+.pagination span {
+	margin-right: 6px;
+	float: left;
+	font-weight: bold !important;
+}
+
+.pagination a {
+	font-weight: bold !important;
+	color: #333;
+	background: #D6D6D5;
+	border: 2px solid #D9D9D9;
+	padding: 2px 6px;
+	margin-right: 6px;
+	float: left;
+	border-radius: 3px;
+}
+
+.clickedLink {
+	color: grey !important;
+	pointer-events: none;
+	cursor: default;
+}
+
+#loginForm .loginbutton span {
+	padding: .4em 1em;
+}
