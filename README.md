@@ -2,11 +2,11 @@
 
 This is a jsf component that allows quick realization of a comment functionality with many features.
 
-![logo](https://raw.github.com/nickrussler/commentbox/master/WebContent/resources/images/banner.png)
+![logo](https://raw.github.com/nickrussler/commentbox/master/misc/images/banner.png)
 
 ## Screenshot
 
-![screenshot](https://raw.github.com/nickrussler/commentbox/master/WebContent/resources/images/sample.png)
+![screenshot](https://raw.github.com/nickrussler/commentbox/master/misc/images/sample.png)
 
 ## Promo Video
 https://www.youtube.com/watch?v=9ZCklu-wI90
