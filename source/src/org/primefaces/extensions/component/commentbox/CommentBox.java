@@ -101,7 +101,8 @@ public class CommentBox extends UINamingContainer {
 	// Utils Start
 	
 	public static void log(String source, String msg) {
-		Logger.getLogger(source).info(msg);
+		// Disable logging for now
+		// Logger.getLogger(source).info(msg);
 	}
 	
 	public void push(String msg) {
