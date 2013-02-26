@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:c="http://java.sun.com/jsf/composite/composites">
+<h:head>
+	<style>
+		html {
+			font-size: 72.25%;
+		}
+	</style>
+</h:head>
+<h:body>
+	<p:panel>
+		<div class="comments">
+			<c:commentBox contextID="#{articleView.article_id}" comments="#{articleView.comments}" currentPage="#{articleView.commentsPage}" commentCount="#{articleView.rootcommentCount}" commentsPerPage="#{articleView.commentsPerPage}" currentUserID="#{userSessionSimulator.userid}" currentUserUsername="User#{userSessionSimulator.userid}" currentUserAvatarUrl="#{resource['images:default_avatar.png']}" onFetchNewComments="#{articleView.onFetchNewComments}" onFetchNewAnswers="#{articleView.onFetchNewAnswers}" onCreateComment="#{articleView.onCreateComment}" onEditComment="#{articleView.onCommentEdit}" onCommentDelete="#{articleView.onCommentDelete}" onCommentLike="#{articleView.onCommentLike}" onCommentSpam="#{articleView.onCommentSpam}" onPageChange="#{articleView.onPageChange}"/>
+		</div>
+	</p:panel>
+</h:body>
+</html>
