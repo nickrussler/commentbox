@@ -13,7 +13,7 @@ import org.primefaces.model.TreeNode;
 
 @FacesRenderer(componentFamily = ReversedTree.COMPONENT_FAMILY, rendererType = ReversedTreeRenderer.RENDERER_TYPE)
 public class ReversedTreeRenderer extends TreeRenderer {
-	public static final String RENDERER_TYPE = "info.whitebyte.component.ReversedTreeRenderer";
+	public static final String RENDERER_TYPE = "org.primefaces.extensions.component.ReversedTreeRenderer";
 
 	@Override
 	public void encodeTreeNodeChildren(FacesContext context, Tree tree, TreeNode node, String clientId, String rowKey, boolean dynamic, boolean checkbox) throws IOException {
