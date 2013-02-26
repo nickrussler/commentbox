@@ -5,8 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:pe="http://primefaces.org/ui/extensions"
-	xmlns:c="http://java.sun.com/jsf/composite/composites">
+	xmlns:pe="http://primefaces.org/ui/extensions">
 
 	<ui:define name="metadata">
 		<f:metadata>
@@ -88,7 +87,7 @@
 
 		<p:panel id="comments" style="margin-top: 9px">
 			<div class="comments">			
-				<c:commentBox contextID="#{articleView.article_id}" comments="#{articleView.comments}" currentPage="#{articleView.commentsPage}" commentCount="#{articleView.rootcommentCount}" commentsPerPage="#{articleView.commentsPerPage}" currentUserID="#{userSession.user_idAsString}" currentUserUsername="#{userSession.username}" currentUserAvatarUrl="/image/#{userSession.avatar_filename}" onFetchNewComments="#{articleView.onFetchNewComments}" onFetchNewAnswers="#{articleView.onFetchNewAnswers}" onCreateComment="#{articleView.onCreateComment}" onEditComment="#{articleView.onCommentEdit}" onCommentDelete="#{articleView.onCommentDelete}" onCommentLike="#{articleView.onCommentLike}" onCommentSpam="#{articleView.onCommentSpam}" onPageChange="#{articleView.onPageChange}"/>
+				<pe:commentBox contextID="#{articleView.article_id}" comments="#{articleView.comments}" currentPage="#{articleView.commentsPage}" commentCount="#{articleView.rootcommentCount}" commentsPerPage="#{articleView.commentsPerPage}" currentUserID="#{userSession.user_idAsString}" currentUserUsername="#{userSession.username}" currentUserAvatarUrl="/image/#{userSession.avatar_filename}" onFetchNewComments="#{articleView.onFetchNewComments}" onFetchNewAnswers="#{articleView.onFetchNewAnswers}" onCreateComment="#{articleView.onCreateComment}" onEditComment="#{articleView.onCommentEdit}" onCommentDelete="#{articleView.onCommentDelete}" onCommentLike="#{articleView.onCommentLike}" onCommentSpam="#{articleView.onCommentSpam}" onPageChange="#{articleView.onPageChange}"/>
 			</div>
 		</p:panel>
 
