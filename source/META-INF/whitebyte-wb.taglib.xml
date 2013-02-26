@@ -2,7 +2,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd"
 	version="2.0">
-	<namespace>http://whitebyte.info/components</namespace>
+	<namespace>http://primefaces.org/ui/extensionsTMP</namespace>
 	
 	<tag>
 		<description><![CDATA[ReveredTree is is used for displaying hierarchical data and creating site navigations, in the reversted order of the Primefaces Tree Component.]]></description>

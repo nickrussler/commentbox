@@ -16,6 +16,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.primefaces.component.outputpanel.OutputPanel;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -143,9 +145,9 @@ public class CommentBox extends UINamingContainer {
 		List<TreeNode> treeAsList = getTreeAsList();
 
 		for (TreeNode treeNode : treeAsList) {
-			CommentWrapper wrapper = (CommentWrapper) treeNode.getData();
+			Pair<Boolean, Comment> wrapper = (Pair<Boolean, Comment>) treeNode.getData();
 
-			if (wrapper.getComment().equals(comment)) {
+			if (wrapper.getRight().equals(comment)) {
 				return treeNode;
 			}
 		}
@@ -235,11 +237,11 @@ public class CommentBox extends UINamingContainer {
 	}
 
 	public void addNode(Comment comment, TreeNode parent) {
-		TreeNode node0 = new DefaultTreeNode(new CommentWrapper(false, comment), parent);
+		TreeNode node0 = new DefaultTreeNode(new MutablePair<Boolean, Comment>(false, comment), parent);
 		node0.setExpanded(true);
 
 		// Add dummy child
-		new DefaultTreeNode(new CommentWrapper(true, comment), node0);
+		new DefaultTreeNode(new MutablePair<Boolean, Comment>(true, comment), node0);
 	}
 
 	public void deleteComment(MethodExpression onCommentDelete, Comment comment) {
@@ -342,11 +344,11 @@ public class CommentBox extends UINamingContainer {
 	}
 
 	private void _generateTree(TreeNode tn, Comment comment) {
-		TreeNode node0 = new DefaultTreeNode(new CommentWrapper(false, comment), tn);
+		TreeNode node0 = new DefaultTreeNode(new MutablePair<Boolean, Comment>(false, comment), tn);
 		node0.setExpanded(true);
 
 		// Add dummy child
-		new DefaultTreeNode(new CommentWrapper(true, comment), node0);
+		new DefaultTreeNode(new MutablePair<Boolean, Comment>(true, comment), node0);
 
 		List<Comment> comments = comment.getAnswers();
 		

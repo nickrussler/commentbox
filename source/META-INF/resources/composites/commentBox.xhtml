@@ -5,8 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:pe="http://primefaces.org/ui/extensions"
-	xmlns:wb="http://whitebyte.info/components">
+	xmlns:pe="http://primefaces.org/ui/extensionsTMP">
 
 	<cc:interface componentType="org.primefaces.extensions.component.commentbox">
 		<cc:attribute name="contextID" type="java.lang.String" />
@@ -76,24 +75,24 @@
 				<span class="hiddenNewComments" style="display: none;">0</span>
 				
 				<p:outputPanel styleClass="comments">
-				    <wb:reversedTree value="#{cc.tree}" var="wrapper" id="tree" widgetVar="treeVar" styleClass="commentTree" cache="false" dynamic="true">
-				        <p:treeNode styleClass="treenode-#{wrapper.comment.id} #{wrapper.dummy ? 'treenode-dummy' : 'treenode-unique-id-'.concat(wrapper.comment.id)}">	        
-				        	<p:outputPanel  rendered="#{not wrapper.dummy}">			        	
+				    <pe:reversedTree value="#{cc.tree}" var="wrapper" id="tree" widgetVar="treeVar" styleClass="commentTree" cache="false" dynamic="true">
+				        <p:treeNode styleClass="treenode-#{wrapper.right.id} #{wrapper.left ? 'treenode-dummy' : 'treenode-unique-id-'.concat(wrapper.right.id)}">	        
+				        	<p:outputPanel  rendered="#{not wrapper.left}">			        	
 								<h:form id="commentForm">
-									<div class="comment comment-#{wrapper.comment.id}" data-commentid="#{wrapper.comment.id}">
+									<div class="comment comment-#{wrapper.right.id}" data-commentid="#{wrapper.right.id}">
 										<div class="newIndicator"></div>
 										<div class="avatar">
-											<a href="#{wrapper.comment.user_profile_url}"><h:graphicImage id="uploadedImage" value="#{wrapper.comment.user_profile_avatar_url}" /></a>
+											<a href="#{wrapper.right.user_profile_url}"><h:graphicImage id="uploadedImage" value="#{wrapper.right.user_profile_avatar_url}" /></a>
 										</div>
 										<div class="body">
 											<header>											
-												<a href="#{wrapper.comment.user_profile_url}" class="username">#{wrapper.comment.user_username}</a>
+												<a href="#{wrapper.right.user_profile_url}" class="username">#{wrapper.right.user_username}</a>
 												
 												<span class="bullet">•</span>
 																							
 												<span>
 													<p:outputPanel styleClass="info">
-														<h:outputText value="#{wrapper.comment.modification_time}">
+														<h:outputText value="#{wrapper.right.modification_time}">
 															<f:converter converterId="org.ocpsoft.PrettyTimeConverter" />
 														</h:outputText>
 													</p:outputPanel>
@@ -102,12 +101,12 @@
 												<span class="bullet">•</span>
 												
 												<p:outputPanel id="comment-likecount">
-													<span class="info">Likes: #{wrapper.comment.likecount}</span>
+													<span class="info">Likes: #{wrapper.right.likecount}</span>
 												</p:outputPanel>
 											</header>
 											
 											<div class="comment-text">
-												<h:outputText value="#{wrapper.comment.comment_text}" escape="false" />
+												<h:outputText value="#{wrapper.right.comment_text}" escape="false" />
 											</div>
 											
 											<div class="commentEditorDiv" />
@@ -117,40 +116,40 @@
 													<p:outputPanel rendered="#{(not empty cc.attrs.currentUserID) and (not empty cc.attrs.onCommentLike)}">
 														<li class="bullet">•</li>
 														<li>
-															<p:commandLink value="Like" update="comment-likecount" styleClass="#{wrapper.comment.deleted ? 'clickedLink' : ''}" onclick="$(this).addClass('clickedLink')" actionListener="#{cc.likeComment(cc.attrs.onCommentLike, wrapper.comment)}" />
+															<p:commandLink value="Like" update="comment-likecount" styleClass="#{wrapper.right.deleted ? 'clickedLink' : ''}" onclick="$(this).addClass('clickedLink')" actionListener="#{cc.likeComment(cc.attrs.onCommentLike, wrapper.comment)}" />
 														</li>									
 													</p:outputPanel>
 													
 													<p:outputPanel rendered="#{(not empty cc.attrs.currentUserID) and (not empty cc.attrs.onCommentSpam)}">
 														<li class="bullet">•</li>
 														<li>
-															<p:commandLink value="Spam" styleClass="#{wrapper.comment.deleted ? 'clickedLink' : ''}" onclick="$(this).addClass('clickedLink')" actionListener="#{cc.spamComment(cc.attrs.onCommentSpam, wrapper.comment)}" />
+															<p:commandLink value="Spam" styleClass="#{wrapper.right.deleted ? 'clickedLink' : ''}" onclick="$(this).addClass('clickedLink')" actionListener="#{cc.spamComment(cc.attrs.onCommentSpam, wrapper.comment)}" />
 														</li>
 													</p:outputPanel>								
 																						
-													<p:outputPanel rendered="#{(not empty cc.attrs.currentUserID) and ((wrapper.comment.user_id eq cc.attrs.currentUserID) or cc.attrs.canEditAll)}">
+													<p:outputPanel rendered="#{(not empty cc.attrs.currentUserID) and ((wrapper.right.user_id eq cc.attrs.currentUserID) or cc.attrs.canEditAll)}">
 														<li class="bullet">•</li>
 														<li>
-															<a href="javascript:void(0)" rel="nofollow" class="#{wrapper.comment.deleted ? 'clickedLink' : ''}" onclick="#{cc.id}_commentboxWrapper.saveCurrentEditComment(#{wrapper.comment.id});#{cc.id}_commentboxWrapper.showInlineEditor()">Edit </a>
+															<a href="javascript:void(0)" rel="nofollow" class="#{wrapper.right.deleted ? 'clickedLink' : ''}" onclick="#{cc.id}_commentboxWrapper.saveCurrentEditComment(#{wrapper.right.id});#{cc.id}_commentboxWrapper.showInlineEditor()">Edit </a>
 														</li>
 														
 													</p:outputPanel>
 													
-													<p:outputPanel rendered="#{(not empty cc.attrs.currentUserID) and ((wrapper.comment.user_id eq cc.attrs.currentUserID) or cc.attrs.canDeleteAll)}">
+													<p:outputPanel rendered="#{(not empty cc.attrs.currentUserID) and ((wrapper.right.user_id eq cc.attrs.currentUserID) or cc.attrs.canDeleteAll)}">
 														<li class="bullet">•</li>
 														<li>
-															<p:commandLink value="Delete" styleClass="#{wrapper.comment.deleted ? 'clickedLink' : ''}" onclick="#{cc.id}_commentboxWrapper.deleteComment(#{wrapper.comment.id})" actionListener="#{cc.deleteComment(cc.attrs.onCommentDelete, wrapper.comment)}" />
+															<p:commandLink value="Delete" styleClass="#{wrapper.right.deleted ? 'clickedLink' : ''}" onclick="#{cc.id}_commentboxWrapper.deleteComment(#{wrapper.right.id})" actionListener="#{cc.deleteComment(cc.attrs.onCommentDelete, wrapper.comment)}" />
 														</li>
 													</p:outputPanel>
 													
 													<p:outputPanel rendered="#{not empty cc.attrs.currentUserID}">
 														<li class="bullet">•</li>
 														<li>
-															<a href="javascript:void(0)" rel="nofollow" class="#{wrapper.comment.deleted ? 'clickedLink' : ''}" onclick="#{cc.id}_commentboxWrapper.saveCurrentAnswerComment(#{wrapper.comment.id});#{cc.id}_commentboxWrapper.showAnswerEditor();">Reply</a>
+															<a href="javascript:void(0)" rel="nofollow" class="#{wrapper.right.deleted ? 'clickedLink' : ''}" onclick="#{cc.id}_commentboxWrapper.saveCurrentAnswerComment(#{wrapper.right.id});#{cc.id}_commentboxWrapper.showAnswerEditor();">Reply</a>
 														</li>
 													</p:outputPanel>											
 													
-													<p:outputPanel styleClass="updateAnswersPanel updateAnswersPanel-#{wrapper.comment.id}" style="display: none;">
+													<p:outputPanel styleClass="updateAnswersPanel updateAnswersPanel-#{wrapper.right.id}" style="display: none;">
 														<li class="bullet">•</li>
 														<li>												
 															<a href="javascript:void(0)" rel="nofollow" class="getReplies" onclick="var commentid = $(this).closest('div.comment').attr('data-commentid');$(#{cc.id}_commentboxWrapper.comment_id + ' .rcGetAnswersForm').find('[name=\'currentAnswerComment\']').val(commentid);rcGetAnswers();#{cc.id}_commentboxWrapper.updateNodes(treeVar, $(this).closest('.ui-treenode'));$(this).closest('.updateAnswersPanel').css('display', 'none'); delete #{cc.id}_commentboxWrapper.newAnswers[commentid];">Show new replies</a>
@@ -171,7 +170,7 @@
 								</h:form>						
 							</p:outputPanel>
 							
-							<p:outputPanel rendered="#{wrapper.dummy}">						
+							<p:outputPanel rendered="#{wrapper.left}">						
 								<div style="margin-top: 9px;" class="commentAnswerDivWrapper">									
 									<div class="avatar">
 										<h:graphicImage rendered="#{not empty cc.attrs.currentUserAvatarUrl}" value="#{cc.attrs.currentUserAvatarUrl}" />
@@ -181,7 +180,7 @@
 								</div>						
 							</p:outputPanel>
 				        </p:treeNode>
-				    </wb:reversedTree>
+				    </pe:reversedTree>
 				</p:outputPanel>
 
 				<p:outputPanel styleClass="cbpaginagtion" rendered="#{cc.attrs.commentsPerPage lt cc.attrs.commentCount}">
