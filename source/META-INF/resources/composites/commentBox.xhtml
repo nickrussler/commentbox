@@ -8,7 +8,7 @@
 	xmlns:pe="http://primefaces.org/ui/extensions"
 	xmlns:wb="http://whitebyte.info/components">
 
-	<cc:interface componentType="info.whitebyte.component.CommentBox">
+	<cc:interface componentType="org.primefaces.extensions.component.commentbox">
 		<cc:attribute name="contextID" type="java.lang.String" />
 		<cc:attribute name="emptyMessage" default="There are no comments yet." type="java.lang.String"/>
 		<cc:attribute name="userNotLoggedIn" default="You need to be logged in to create a comment." type="java.lang.String"/>
@@ -22,20 +22,16 @@
 		<cc:attribute name="canEditAll" type="java.lang.Boolean"/>
 		<cc:attribute name="canDeleteAll" type="java.lang.Boolean"/>
 		<cc:attribute name="onFetchNewComments" method-signature="void myAction()" />
-		<cc:attribute name="onFetchNewAnswers" method-signature="void myAction(info.whitebyte.component.commentbox.Comment)" />
-		<cc:attribute name="onCreateComment" method-signature="boolean myAction(info.whitebyte.component.commentbox.Comment)" />
-		<cc:attribute name="onEditComment" method-signature="void myAction(info.whitebyte.component.commentbox.Comment)" />
-		<cc:attribute name="onCommentLike" method-signature="void myAction(info.whitebyte.component.commentbox.Comment)" />
-		<cc:attribute name="onCommentSpam" method-signature="void myAction(info.whitebyte.component.commentbox.Comment)" />
-		<cc:attribute name="onCommentDelete" method-signature="void myAction(info.whitebyte.component.commentbox.Comment)" />
+		<cc:attribute name="onFetchNewAnswers" method-signature="void myAction(org.primefaces.extensions.component.commentbox.Comment)" />
+		<cc:attribute name="onCreateComment" method-signature="boolean myAction(org.primefaces.extensions.component.commentbox.Comment)" />
+		<cc:attribute name="onEditComment" method-signature="void myAction(org.primefaces.extensions.component.commentbox.Comment)" />
+		<cc:attribute name="onCommentLike" method-signature="void myAction(org.primefaces.extensions.component.commentbox.Comment)" />
+		<cc:attribute name="onCommentSpam" method-signature="void myAction(org.primefaces.extensions.component.commentbox.Comment)" />
+		<cc:attribute name="onCommentDelete" method-signature="void myAction(org.primefaces.extensions.component.commentbox.Comment)" />
 		<cc:attribute name="onPageChange" method-signature="void myAction(java.lang.Long)" />
 	</cc:interface>
 
 	<cc:implementation>
-	
-	<h:outputStylesheet library="css" name="commentbox.css" />
-	
-	<h:outputScript library="js" name="jquery.cleditor.youtube.js"/>
 	
 	<script>
 	//<![CDATA[

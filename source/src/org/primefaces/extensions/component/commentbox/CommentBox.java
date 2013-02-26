@@ -1,13 +1,16 @@
-package info.whitebyte.component.commentbox;
+package org.primefaces.extensions.component.commentbox;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.component.FacesComponent;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
@@ -19,12 +22,23 @@ import org.primefaces.model.TreeNode;
 import org.primefaces.push.PushContext;
 import org.primefaces.push.PushContextFactory;
 
-import utils.Utils;
-
+/**
+ * Component class for the <code>Commentbox</code> component.
+ *
+ * @author Nick Russler / last modified by $Author$
+ * @version $Revision$
+ * @since 0.7
+ */
+@ResourceDependencies({
+	@ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
+	@ResourceDependency(library = "primefaces", name = "primefaces.js"),
+	@ResourceDependency(library = "primefaces-extensions", name = "commentbox/commentbox.css"),
+	@ResourceDependency(library = "primefaces-extensions", name = "commentbox/jquery.cleditor.youtube.js", target="body")
+})
 @FacesComponent(value = CommentBox.COMPONENT_TYPE)
 public class CommentBox extends UINamingContainer {
 
-	public static final String COMPONENT_TYPE = "info.whitebyte.component.CommentBox";
+	public static final String COMPONENT_TYPE = "org.primefaces.extensions.component.commentbox";
 
 	enum PropertyKeys {
 		contextID, emptyMessage, comments, currentPage, commentsPerPage, commentCount, currentUserID, currentUserUsername, currentUserAvatarUrl, canEditAll, canDeleteAll
@@ -86,8 +100,12 @@ public class CommentBox extends UINamingContainer {
 
 	// Utils Start
 	
+	public static void log(String source, String msg) {
+		Logger.getLogger(source).info(msg);
+	}
+	
 	public void push(String msg) {
-		Utils.log("", "push: " + msg);
+		log("", "push: " + msg);
 		
 		PushContext pushContext = PushContextFactory.getDefault().getPushContext();		
         pushContext.push("/commentboxpush-" + this.getClientId() + "-" + this.getContextID(), msg);
@@ -160,7 +178,7 @@ public class CommentBox extends UINamingContainer {
 	}
 	
 	public void fetchNewComments(MethodExpression onFetchNewComments) {
-		Utils.log("", "fetchNewComments");
+		log("", "fetchNewComments");
 
 		if (onFetchNewComments != null) {
 			executeMethodExpression(onFetchNewComments, new Object[] {});
@@ -171,7 +189,7 @@ public class CommentBox extends UINamingContainer {
 	}
 	
 	public void fetchNewAnswers(MethodExpression onFetchNewAnswers) {
-		Utils.log("", "fetchNewAnswers");
+		log("", "fetchNewAnswers");
 		
 		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		String answerID = params.get("currentAnswerComment");
@@ -196,7 +214,7 @@ public class CommentBox extends UINamingContainer {
 	}
 
 	public void createComment(MethodExpression onCreateComment) {
-		Utils.log("", "createComment");
+		log("", "createComment");
 		
 		boolean insertComment = false;
 
@@ -224,7 +242,7 @@ public class CommentBox extends UINamingContainer {
 	}
 
 	public void deleteComment(MethodExpression onCommentDelete, Comment comment) {
-		Utils.log("", "deleteComment: " + comment);
+		log("", "deleteComment: " + comment);
 
 		comment.setComment_text("<i>This commented was deleted by the Author</i>");
 		comment.setDeleted(true);
@@ -235,7 +253,7 @@ public class CommentBox extends UINamingContainer {
 	}
 
 	public void editComment(MethodExpression onEditComment) {
-		Utils.log("", "editComment");
+		log("", "editComment");
 
 		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		String editID = params.get("currentEditComment");
@@ -254,7 +272,7 @@ public class CommentBox extends UINamingContainer {
 	}
 
 	public void answerComment(MethodExpression onCreateComment) {
-		Utils.log("", "answerComment");
+		log("", "answerComment");
 
 		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		String answerID = params.get("currentAnswerComment");
@@ -279,7 +297,7 @@ public class CommentBox extends UINamingContainer {
 	}
 
 	public void likeComment(MethodExpression onLikeComment, Comment comment) {
-		Utils.log("", "likeComment");
+		log("", "likeComment");
 
 		comment.setLikecount(comment.getLikecount() + 1);
 
@@ -289,7 +307,7 @@ public class CommentBox extends UINamingContainer {
 	}
 
 	public void spamComment(MethodExpression onSpamComment, Comment comment) {
-		Utils.log("", "spamComment");
+		log("", "spamComment");
 
 		comment.setSpamcount(comment.getSpamcount() + 1);
 

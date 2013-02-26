@@ -1,4 +1,4 @@
-package info.whitebyte.component.commentbox;
+package org.primefaces.extensions.component.commentbox;
 
 public class CommentWrapper {
 	private boolean dummy;

@@ -1,4 +1,4 @@
-package info.whitebyte.component.commentbox;
+package org.primefaces.extensions.component.commentbox;
 
 import java.util.ArrayList;
 import java.util.Date;

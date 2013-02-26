@@ -1,4 +1,4 @@
-package info.whitebyte.component.reversedtree;
+package org.primefaces.extensions.component.reversedtree;
 
 import java.io.IOException;
 import java.util.List;
