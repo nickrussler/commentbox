@@ -66,7 +66,7 @@ public class ArticleView implements Serializable{
 	private int commentCount;
 	private int rootcommentCount;
 	
-	private List<org.primefaces.extensions.component.commentbox.Comment> comments = new ArrayList<org.primefaces.extensions.component.commentbox.Comment>();	
+	private List<info.whitebyte.component.commentbox.Comment> comments = new ArrayList<info.whitebyte.component.commentbox.Comment>();	
 	// Comments End
 	
 	private MessageHandler getMessageHandler() {
@@ -126,15 +126,15 @@ public class ArticleView implements Serializable{
 		articleBean.setTitle2(slugifiedURLTitle);
 	}
 	
-	private List<org.primefaces.extensions.component.commentbox.Comment> getChildren(Comment comment) {
+	private List<info.whitebyte.component.commentbox.Comment> getChildren(Comment comment) {
 		List<Comment> findByParentWithMaxSpamCount = commentEAO.findByParentWithMaxSpamCount(comment);
 		
-		List<org.primefaces.extensions.component.commentbox.Comment> result = new ArrayList<org.primefaces.extensions.component.commentbox.Comment>();
+		List<info.whitebyte.component.commentbox.Comment> result = new ArrayList<info.whitebyte.component.commentbox.Comment>();
 		
 		for (Comment comment2 : findByParentWithMaxSpamCount) {
 			User author = comment2.getUser();
 			
-			org.primefaces.extensions.component.commentbox.Comment commentBean = new org.primefaces.extensions.component.commentbox.Comment();
+			info.whitebyte.component.commentbox.Comment commentBean = new info.whitebyte.component.commentbox.Comment();
 			commentBean.setId(comment2.getId() + "");
 			commentBean.setComment_text(comment2.getComment());
 			commentBean.setUser_id(author.getId() + "");
@@ -161,7 +161,7 @@ public class ArticleView implements Serializable{
 		for (Comment comment : dbComments) {			
 			User author = comment.getUser();
 			
-			org.primefaces.extensions.component.commentbox.Comment commentBean = new org.primefaces.extensions.component.commentbox.Comment();
+			info.whitebyte.component.commentbox.Comment commentBean = new info.whitebyte.component.commentbox.Comment();
 			
 			commentBean.setId(comment.getId() + "");
 			commentBean.setComment_text(comment.getComment());
@@ -184,11 +184,11 @@ public class ArticleView implements Serializable{
 		fillComments();
 	}
 	
-	public void onFetchNewAnswers(org.primefaces.extensions.component.commentbox.Comment comment) {
+	public void onFetchNewAnswers(info.whitebyte.component.commentbox.Comment comment) {
 		comment.setAnswers(this.getChildren(this.commentEAO.findById(Long.parseLong(comment.getId()))));
 	}
 	
-	public boolean onCreateComment(org.primefaces.extensions.component.commentbox.Comment comment) {
+	public boolean onCreateComment(info.whitebyte.component.commentbox.Comment comment) {
 		boolean isAnswer = (comment.getParent() != null);
 		
 		Comment newComment = new Comment();
@@ -235,7 +235,7 @@ public class ArticleView implements Serializable{
 		return true;
 	}
 	
-	public void onCommentLike(org.primefaces.extensions.component.commentbox.Comment commentBean2) {
+	public void onCommentLike(info.whitebyte.component.commentbox.Comment commentBean2) {
 		Comment comment = commentEAO.findById(Long.parseLong(commentBean2.getId()));
 		User user = userSession.getCurrentUser();
 		
@@ -273,7 +273,7 @@ public class ArticleView implements Serializable{
 		this.getMessageHandler().dischargeMessages();
 	}
 	
-	public void onCommentSpam(org.primefaces.extensions.component.commentbox.Comment commentBean) {
+	public void onCommentSpam(info.whitebyte.component.commentbox.Comment commentBean) {
 		Comment comment = commentEAO.findById(Long.parseLong(commentBean.getId()));
 		User user = userSession.getCurrentUser();
 		
@@ -317,7 +317,7 @@ public class ArticleView implements Serializable{
 		this.getMessageHandler().dischargeMessages();
 	}
 	
-	public boolean onCommentEdit(org.primefaces.extensions.component.commentbox.Comment commentBean) {
+	public boolean onCommentEdit(info.whitebyte.component.commentbox.Comment commentBean) {
 		try {
 			Comment newComment = commentEAO.findById(Long.parseLong(commentBean.getId()));
 
@@ -350,7 +350,7 @@ public class ArticleView implements Serializable{
 		return true;
 	}
 	
-	public void onCommentDelete(org.primefaces.extensions.component.commentbox.Comment commentBean) {
+	public void onCommentDelete(info.whitebyte.component.commentbox.Comment commentBean) {
 		try {
 			Comment comment = commentEAO.findById(Long.parseLong(commentBean.getId()));			
 			comment.setComment(commentBean.getComment_text());			
@@ -407,11 +407,11 @@ public class ArticleView implements Serializable{
 		return commentsPerPage;
 	}
 
-	public List<org.primefaces.extensions.component.commentbox.Comment> getComments() {
+	public List<info.whitebyte.component.commentbox.Comment> getComments() {
 		return comments;
 	}
 
-	public void setComments(List<org.primefaces.extensions.component.commentbox.Comment> comments) {
+	public void setComments(List<info.whitebyte.component.commentbox.Comment> comments) {
 		this.comments = comments;
 	}
 

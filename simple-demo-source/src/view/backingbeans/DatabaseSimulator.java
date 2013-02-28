@@ -1,19 +1,12 @@
 package view.backingbeans;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
+import info.whitebyte.component.commentbox.Comment;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
-
-import org.primefaces.extensions.component.commentbox.Comment;
 
 @ApplicationScoped
 public class DatabaseSimulator implements Serializable {

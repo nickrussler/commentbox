@@ -1,5 +1,7 @@
 package view.backingbeans;
 
+import info.whitebyte.component.commentbox.Comment;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -7,8 +9,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
-
-import org.primefaces.extensions.component.commentbox.Comment;
 
 import view.formbeans.ArticleBean;
 

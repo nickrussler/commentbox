@@ -5,9 +5,9 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:pe="http://primefaces.org/ui/extensionsTMP">
+	xmlns:wb="http://whitebyte.info/components">
 
-	<cc:interface componentType="org.primefaces.extensions.component.commentbox">
+	<cc:interface componentType="info.whitebyte.component.commentbox">
 		<cc:attribute name="contextID" type="java.lang.String" />
 		<cc:attribute name="emptyMessage" default="There are no comments yet." type="java.lang.String"/>
 		<cc:attribute name="userNotLoggedIn" default="You need to be logged in to create a comment." type="java.lang.String"/>
@@ -21,12 +21,12 @@
 		<cc:attribute name="canEditAll" type="java.lang.Boolean"/>
 		<cc:attribute name="canDeleteAll" type="java.lang.Boolean"/>
 		<cc:attribute name="onFetchNewComments" method-signature="void myAction()" />
-		<cc:attribute name="onFetchNewAnswers" method-signature="void myAction(org.primefaces.extensions.component.commentbox.Comment)" />
-		<cc:attribute name="onCreateComment" method-signature="boolean myAction(org.primefaces.extensions.component.commentbox.Comment)" />
-		<cc:attribute name="onEditComment" method-signature="void myAction(org.primefaces.extensions.component.commentbox.Comment)" />
-		<cc:attribute name="onCommentLike" method-signature="void myAction(org.primefaces.extensions.component.commentbox.Comment)" />
-		<cc:attribute name="onCommentSpam" method-signature="void myAction(org.primefaces.extensions.component.commentbox.Comment)" />
-		<cc:attribute name="onCommentDelete" method-signature="void myAction(org.primefaces.extensions.component.commentbox.Comment)" />
+		<cc:attribute name="onFetchNewAnswers" method-signature="void myAction(info.whitebyte.component.commentbox.Comment)" />
+		<cc:attribute name="onCreateComment" method-signature="boolean myAction(info.whitebyte.component.commentbox.Comment)" />
+		<cc:attribute name="onEditComment" method-signature="void myAction(info.whitebyte.component.commentbox.Comment)" />
+		<cc:attribute name="onCommentLike" method-signature="void myAction(info.whitebyte.component.commentbox.Comment)" />
+		<cc:attribute name="onCommentSpam" method-signature="void myAction(info.whitebyte.component.commentbox.Comment)" />
+		<cc:attribute name="onCommentDelete" method-signature="void myAction(info.whitebyte.component.commentbox.Comment)" />
 		<cc:attribute name="onPageChange" method-signature="void myAction(java.lang.Long)" />
 	</cc:interface>
 
@@ -36,7 +36,7 @@
 	//<![CDATA[
 	$(function(){
 		// The background image is set here because the el is not evaluated in the external js file..
-		$.cleditor.buttons.youtube.css.background = "URL(#{resource['primefaces-extensions:commentbox/film-youtube.png']}) 50% 50% no-repeat";
+		$.cleditor.buttons.youtube.css.background = "URL(#{resource['whitebyte:commentbox/film-youtube.png']}) 50% 50% no-repeat";
 	});
 	//]]>
 	</script>
@@ -75,7 +75,7 @@
 				<span class="hiddenNewComments" style="display: none;">0</span>
 				
 				<p:outputPanel styleClass="comments">
-				    <pe:reversedTree value="#{cc.tree}" var="wrapper" id="tree" widgetVar="treeVar" styleClass="commentTree" cache="false" dynamic="true">
+				    <wb:reversedTree value="#{cc.tree}" var="wrapper" id="tree" widgetVar="treeVar" styleClass="commentTree" cache="false" dynamic="true">
 				        <p:treeNode styleClass="treenode-#{wrapper.right.id} #{wrapper.left ? 'treenode-dummy' : 'treenode-unique-id-'.concat(wrapper.right.id)}">	        
 				        	<p:outputPanel  rendered="#{not wrapper.left}">			        	
 								<h:form id="commentForm">
@@ -180,7 +180,7 @@
 								</div>						
 							</p:outputPanel>
 				        </p:treeNode>
-				    </pe:reversedTree>
+				    </wb:reversedTree>
 				</p:outputPanel>
 
 				<p:outputPanel styleClass="cbpaginagtion" rendered="#{cc.attrs.commentsPerPage lt cc.attrs.commentCount}">
