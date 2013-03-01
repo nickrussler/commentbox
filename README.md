@@ -27,6 +27,9 @@ Other users are notified on new comments, replies and when other users type.
 * Primefaces
 * Primefaces push (Athmosphere framework)
 
+## Download
+[Here](https://buildhive.cloudbees.com/job/nickrussler/job/commentbox/ws/source/target/commentbox-0.0.1-SNAPSHOT.jar) you can download the latest jar
+
 ## Why should i use it, i could use some external chat service?
 
 * You keep your data where it belongs, on your server !
