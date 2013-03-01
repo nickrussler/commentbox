@@ -188,9 +188,7 @@ public class ArticleView implements Serializable{
 		comment.setAnswers(this.getChildren(this.commentEAO.findById(Long.parseLong(comment.getId()))));
 	}
 	
-	public boolean onCreateComment(info.whitebyte.component.commentbox.Comment comment) {
-		boolean isAnswer = (comment.getParent() != null);
-		
+	private boolean handleNewComment(info.whitebyte.component.commentbox.Comment comment, boolean isAnswer) {		
 		Comment newComment = new Comment();
 		
 		Article article = this.articleEAO.findById(article_id);
@@ -233,6 +231,14 @@ public class ArticleView implements Serializable{
 		}
 		
 		return true;
+	}
+	
+	public boolean onCreateComment(info.whitebyte.component.commentbox.Comment comment) {
+		return handleNewComment(comment, false);
+	}
+	
+	public boolean onCreateAnswer(info.whitebyte.component.commentbox.Comment comment) {
+		return handleNewComment(comment, true);
 	}
 	
 	public void onCommentLike(info.whitebyte.component.commentbox.Comment commentBean2) {

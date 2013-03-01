@@ -93,9 +93,10 @@
 				 commentsPerPage="#{articleView.commentsPerPage}" currentUserID="#{userSession.user_idAsString}" 
 				 currentUserUsername="#{userSession.username}" currentUserAvatarUrl="/image/#{userSession.avatar_filename}" 
 				 onFetchNewComments="#{articleView.onFetchNewComments}" onFetchNewAnswers="#{articleView.onFetchNewAnswers}" 
-				 onCreateComment="#{articleView.onCreateComment}" onEditComment="#{articleView.onCommentEdit}" 
-				 onCommentDelete="#{articleView.onCommentDelete}" onCommentLike="#{articleView.onCommentLike}" 
-				 onCommentSpam="#{articleView.onCommentSpam}" onPageChange="#{articleView.onPageChange}"/>
+				 onCreateComment="#{articleView.onCreateComment}" onCreateAnswer="#{articleView.onCreateAnswer}"
+				 onEditComment="#{articleView.onCommentEdit}" onCommentDelete="#{articleView.onCommentDelete}" 
+				 onCommentLike="#{articleView.onCommentLike}" onCommentSpam="#{articleView.onCommentSpam}" 
+				 onPageChange="#{articleView.onPageChange}"/>
 			</div>
 		</p:panel>
 
