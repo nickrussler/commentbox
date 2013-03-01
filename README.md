@@ -36,13 +36,19 @@ Other users are notified on new comments, replies and when other users type.
 * Also you can (and are allowed to) make modifications to adapt to your special needs.
 * You can connect this component to your own user-system and your users don't need to have an account on your site and an additional account for the external system.
 
-## First Steps
+## First Steps for Simple Demo
+
+Just deploy the simple demo project in any AS with eclipse or your IDE of choice.
+
+## First Steps for Extended Demo
 
 Create the needed datasource (commentboxDS) in the configs of your AS or rename the used datasource to one of yours (in persistence.xml).
 
-Then simply deploy the demo project in any AS with eclipse or your IDE of choice.
+Then deploy the demo project in any AS with eclipse or your IDE of choice.
 
-In case of JBoss you need to adjust the standalone.xml to support atmosphere:
+
+## Notice for JBoss usage
+In case you use JBoss and want to use the live features you need to adjust the standalone.xml to support atmosphere:
 
 change the line:
 
