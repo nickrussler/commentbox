@@ -48,3 +48,8 @@ change the line:
 to:
 
 `<subsystem xmlns="urn:jboss:domain:web:1.1" native="true" [...]>`
+
+## Used Resources
+
+* Fugue Icons - Yusuke Kamiyamane - http://p.yusukekamiyamane.com/
+* CLEditor YouTube Plugin v1.0.0 - Markus Horowski - http://www.terapix.de
