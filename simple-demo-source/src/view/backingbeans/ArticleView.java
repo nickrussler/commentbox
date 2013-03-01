@@ -53,6 +53,14 @@ public class ArticleView implements Serializable{
 		return true;
 	}
 	
+	public boolean onCreateAnswer(Comment comment) {
+		// Nothing to do here, except assingning a unique id, because the list is Application scoped
+		comment.setId(dbSimulator.getUniqueID() + "");
+		dbSimulator.setUniqueID(dbSimulator.getUniqueID() + 1);
+		
+		return true;
+	}
+	
 	public void onCommentLike(Comment commentBean2) {
 		// Nothing to do here because the list is Application scoped
 	}
