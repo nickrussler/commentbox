@@ -324,8 +324,7 @@ function commentboxWidget(ccid, userid) {
 
 	this.timer = function () {	
 		var isUserTyping = (new Date().getTime() - _self.isUserTyping_timestamp) < 1000;
-		
-		console.log('User typing: ' + isUserTyping);
+
 		_self.dropOldTypingUsers();				
 		
 		if (isUserTyping) {										
@@ -363,9 +362,7 @@ function commentboxWidget(ccid, userid) {
 		});
 	};
 
-	this.handlePushMessage = function (msg) {
-		console.log(msg);
-		
+	this.handlePushMessage = function (msg) {		
 		var json = JSON.parse(msg);
 		
 		if (json.a) {

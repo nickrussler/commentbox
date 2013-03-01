@@ -42,7 +42,7 @@ public class CommentBox extends UINamingContainer {
 	public static final String COMPONENT_TYPE = "info.whitebyte.component.commentbox";
 
 	enum PropertyKeys {
-		contextID, emptyMessage, comments, currentPage, commentsPerPage, commentCount, currentUserID, currentUserUsername, currentUserAvatarUrl, canEditAll, canDeleteAll
+		contextID, emptyMessage, comments, currentPage, commentsPerPage, commentCount, currentUserID, currentUserUsername, currentUserAvatarUrl, canEditAll, canDeleteAll, enableLiveFeatures
 	}
 
 	String new_comment_editor_text = "<span style=\"font-family: Arial, Verdana; font-size: 13px;\"><font color=\"#666666\">Leave a comment...</font></span>";
@@ -96,6 +96,10 @@ public class CommentBox extends UINamingContainer {
 	private String getContextID() {
 		return getAttribute(PropertyKeys.contextID);
 	}
+	
+	private Boolean isEnableLiveFeatures() {
+		return getAttribute(PropertyKeys.enableLiveFeatures);
+	}
 
 	// Getter and Setter End
 
@@ -107,6 +111,10 @@ public class CommentBox extends UINamingContainer {
 	}
 	
 	public void push(String msg) {
+		if (!isEnableLiveFeatures()) {
+			return;
+		}
+		
 		log("", "push: " + msg);
 		
 		PushContext pushContext = PushContextFactory.getDefault().getPushContext();		
