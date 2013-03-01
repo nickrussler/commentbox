@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 
+import utils.SerializationUtils;
+
 @ApplicationScoped
 public class DatabaseSimulator implements Serializable {
 	private static final long serialVersionUID = -4562076201196928335L;
@@ -15,54 +17,86 @@ public class DatabaseSimulator implements Serializable {
 	private List<Comment> comments = new ArrayList<Comment>();
 	private int uniqueID = 0;
 
-	public List<Comment> getComments() {
-		return this.comments;
+	public List<Comment> getComments(Long start, Long count) {
+		int startInt = start.intValue();
+		int endInt = start.intValue() + count.intValue();
 		
-//		try {
-//			return getListCopy();
-//		} catch (Exception e) {
-//			System.out.println(e.getMessage());
-//		}
-//		
-//		return null;
+		if (endInt > this.comments.size()) {
+			endInt = this.comments.size();
+		}
+		
+		return SerializationUtils.cloneObject(new ArrayList<Comment>(this.comments.subList(startInt, endInt)));
 	}
-
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
+	
+	private Comment _findCommentByID(Comment parent, String commentid) {
+		if (parent.getId().equals(commentid)) {
+			return parent;
+		}
+		
+		for (Comment answer : parent.getAnswers()) {
+			Comment result = _findCommentByID(answer, commentid);
+			
+			if (result != null) {
+				return result;
+			}
+		}
+		
+		return null;
+	}	
+	
+	private Comment findCommentByID(String commentid) {
+		for (Comment comment : comments) {
+			Comment result = _findCommentByID(comment, commentid);
+			
+			if (result != null) {
+				return result;
+			}
+		}
+		
+		return null;
 	}
-
-//	@SuppressWarnings("unchecked")
-//	public List<Comment> getListCopy() throws Exception {
-//		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//		ObjectOutput out = null;
-//		try {
-//			out = new ObjectOutputStream(bos);
-//			out.writeObject(comments);
-//			byte[] yourBytes = bos.toByteArray();
-//
-//			ByteArrayInputStream bis = new ByteArrayInputStream(yourBytes);
-//			ObjectInput in = null;
-//			try {
-//				in = new ObjectInputStream(bis);
-//				Object o = in.readObject();
-//
-//				return (List<Comment>) o;
-//			} finally {
-//				bis.close();
-//				in.close();
-//			}
-//
-//		} finally {
-//			out.close();
-//			bos.close();
-//		}
-//	}
-
-	public int getUniqueID() {
-		return uniqueID;
+	
+	public List<Comment> getAnswers(Comment comment) {
+		return SerializationUtils.cloneObject(findCommentByID(comment.getId()).getAnswers());
 	}
-
-	public void setUniqueID(int uniqueID) {
-		this.uniqueID = uniqueID;
+	
+	public void createComment(Comment comment) {
+		comment.setId(this.uniqueID + "");
+		this.uniqueID++;
+		
+		this.comments.add(0, SerializationUtils.cloneObject(comment));
+	}
+	
+	public void createAnswer(Comment parent, Comment comment) {
+		comment.setId(this.uniqueID + "");
+		this.uniqueID++;
+		
+		System.out.println(this.findCommentByID(parent.getId()).getAnswers().size());
+		System.out.println("##############einmal!" + comment.getId());
+		
+		this.findCommentByID(parent.getId()).getAnswers().add(0, SerializationUtils.cloneObject(comment));
+		
+		System.out.println(this.findCommentByID(parent.getId()).getAnswers().size());
+	}
+	
+	public void likeComment(Comment comment) {
+		Comment databaseComment = findCommentByID(comment.getId());
+		databaseComment.setLikecount(comment.getLikecount());
+	}
+	
+	public void spamComment(Comment comment) {
+		Comment databaseComment = findCommentByID(comment.getId());
+		databaseComment.setSpamcount(comment.getSpamcount());
+	}
+	
+	public void editComment(Comment comment) {
+		Comment databaseComment = findCommentByID(comment.getId());
+		databaseComment.setComment_text(comment.getComment_text());
+	}
+	
+	public void deleteComment(Comment comment) {
+		Comment databaseComment = findCommentByID(comment.getId());
+		databaseComment.setComment_text(comment.getComment_text());
+		databaseComment.setDeleted(true);
 	}
 }

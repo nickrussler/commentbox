@@ -17,7 +17,7 @@
 	<p:panel>
 		<div class="comments">
 			<c:commentBox contextID="#{articleView.article_id}" comments="#{articleView.comments}" 
-			currentPage="#{articleView.commentsPage}" commentCount="#{articleView.rootcommentCount}" 
+			currentPage="#{articleView.commentsPage}" commentCount="#{articleView.commentCount}" 
 			commentsPerPage="#{articleView.commentsPerPage}" currentUserID="#{userSessionSimulator.userid}" 
 			currentUserUsername="User#{userSessionSimulator.userid}" currentUserAvatarUrl="#{resource['images:default_avatar.png']}" 
 			onFetchNewComments="#{articleView.onFetchNewComments}" onFetchNewAnswers="#{articleView.onFetchNewAnswers}" 

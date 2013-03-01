@@ -24,72 +24,63 @@ public class ArticleView implements Serializable{
 	DatabaseSimulator dbSimulator;
 	
 	// Comments Begin
-	private int commentsPerPage = 5;
-	private Long commentsPage = 1L;
-	private int commentCount;
-	private int rootcommentCount;
+	private Long commentsPerPage = 5L;
+	private Long commentsPage = 0L;
+	private Long commentCount;
 	
 	private List<Comment> comments;
 	// Comments End
 	
+	private void loadRootComments() {
+		comments = dbSimulator.getComments(commentsPage*commentsPerPage, commentsPerPage);
+		commentCount = (long) comments.size();
+	}
+	
 	@PostConstruct
 	public void init() {	
-		comments = dbSimulator.getComments();
+		loadRootComments();
 	}
 	
 	public void onFetchNewComments() {	
-		comments = dbSimulator.getComments();
+		loadRootComments();
 	}
 	
 	public void onFetchNewAnswers(Comment comment) {
-		// Nothing to do here because the list is Application scoped
+		comment.setAnswers(dbSimulator.getAnswers(comment));
 	}
 	
 	public boolean onCreateComment(Comment comment) {
-		// Nothing to do here, except assingning a unique id, because the list is Application scoped
-		comment.setId(dbSimulator.getUniqueID() + "");
-		dbSimulator.setUniqueID(dbSimulator.getUniqueID() + 1);
+		dbSimulator.createComment(comment);
 		
 		return true;
 	}
 	
 	public boolean onCreateAnswer(Comment comment) {
-		// Nothing to do here, except assingning a unique id, because the list is Application scoped
-		comment.setId(dbSimulator.getUniqueID() + "");
-		dbSimulator.setUniqueID(dbSimulator.getUniqueID() + 1);
+		dbSimulator.createAnswer(comment.getParent(), comment);
 		
 		return true;
 	}
 	
-	public void onCommentLike(Comment commentBean2) {
-		// Nothing to do here because the list is Application scoped
+	public void onCommentLike(Comment comment) {
+		dbSimulator.likeComment(comment);
 	}
 	
-	public void onCommentSpam(Comment commentBean) {
-		// Nothing to do here because the list is Application scoped
+	public void onCommentSpam(Comment comment) {
+		dbSimulator.spamComment(comment);
 	}
 	
-	public boolean onCommentEdit(Comment commentBean) {		
-		// Nothing to do here because the list is Application scoped
+	public boolean onCommentEdit(Comment comment) {		
+		dbSimulator.editComment(comment);
 		
 		return true;
 	}
 	
-	public void onCommentDelete(Comment commentBean) {
-		// Nothing to do here because the list is Application scoped
+	public void onCommentDelete(Comment comment) {
+		dbSimulator.deleteComment(comment);
 	}
 	
 	public void onPageChange(Long newPage) {
-		this.commentsPage = newPage;	
-
-		int start = (commentsPage.intValue() - 1) * commentsPerPage;
-		int end = start + commentsPerPage;
-		
-		comments = dbSimulator.getComments().subList(start, end);
-	}
-	
-	public void vote(long article_id, boolean like, boolean isView) {
-		// Nothing to do here because the list is Application scoped
+		loadRootComments();
 	}
 	
 	public long getArticle_id() {
@@ -108,15 +99,15 @@ public class ArticleView implements Serializable{
 		this.articleBean = articleBean;
 	}
 
-	public int getCommentCount() {
+	public Long getCommentCount() {
 		return commentCount;
 	}
 
-	public void setCommentCount(int commentCount) {
+	public void setCommentCount(Long commentCount) {
 		this.commentCount = commentCount;
 	}
 	
-	public int getCommentsPerPage() {
+	public Long getCommentsPerPage() {
 		return commentsPerPage;
 	}
 
@@ -126,14 +117,6 @@ public class ArticleView implements Serializable{
 
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
-	}
-
-	public int getRootcommentCount() {
-		return rootcommentCount;
-	}
-
-	public void setRootcommentCount(int rootcommentCount) {
-		this.rootcommentCount = rootcommentCount;
 	}
 
 	public Long getCommentsPage() {
