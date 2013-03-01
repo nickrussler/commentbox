@@ -33,6 +33,7 @@ import org.primefaces.push.PushContextFactory;
 	@ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
 	@ResourceDependency(library = "primefaces", name = "primefaces.js"),
 	@ResourceDependency(library = "whitebyte", name = "commentbox/commentbox.css"),
+	@ResourceDependency(library = "whitebyte", name = "commentbox/commentbox.js"),
 	@ResourceDependency(library = "whitebyte", name = "commentbox/jquery.cleditor.youtube.js", target="body")
 })
 @FacesComponent(value = CommentBox.COMPONENT_TYPE)
