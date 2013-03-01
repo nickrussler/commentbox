@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.el.ELContext;
 import javax.el.MethodExpression;
@@ -15,8 +16,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 
-import org.apache.commons.lang3.tuple.MutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.primefaces.component.outputpanel.OutputPanel;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -103,7 +102,7 @@ public class CommentBox extends UINamingContainer {
 	
 	public static void log(String source, String msg) {
 		// Disable logging for now
-		// Logger.getLogger(source).info(msg);
+		Logger.getLogger(source).info(msg);
 	}
 	
 	public void push(String msg) {
@@ -237,11 +236,11 @@ public class CommentBox extends UINamingContainer {
 	}
 
 	public void addNode(Comment comment, TreeNode parent) {
-		TreeNode node0 = new DefaultTreeNode(new MutablePair<Boolean, Comment>(false, comment), parent);
+		TreeNode node0 = new DefaultTreeNode(new Pair<Boolean, Comment>(false, comment), parent);
 		node0.setExpanded(true);
 
 		// Add dummy child
-		new DefaultTreeNode(new MutablePair<Boolean, Comment>(true, comment), node0);
+		new DefaultTreeNode(new Pair<Boolean, Comment>(true, comment), node0);
 	}
 
 	public void deleteComment(MethodExpression onCommentDelete, Comment comment) {
@@ -274,7 +273,7 @@ public class CommentBox extends UINamingContainer {
 		}
 	}
 
-	public void answerComment(MethodExpression onCreateComment) {
+	public void answerComment(MethodExpression onCreateAnswer) {
 		log("", "answerComment");
 
 		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
@@ -287,8 +286,8 @@ public class CommentBox extends UINamingContainer {
 		Comment comment = _createComment(answer_comment_editor_text);
 		comment.setParent(parent);
 
-		if (onCreateComment != null) {
-			insertComment = (Boolean)executeMethodExpression(onCreateComment, new Object[] { comment });
+		if (onCreateAnswer != null) {
+			insertComment = (Boolean)executeMethodExpression(onCreateAnswer, new Object[] { comment });
 		}
 		
 		if (insertComment) {
@@ -344,11 +343,11 @@ public class CommentBox extends UINamingContainer {
 	}
 
 	private void _generateTree(TreeNode tn, Comment comment) {
-		TreeNode node0 = new DefaultTreeNode(new MutablePair<Boolean, Comment>(false, comment), tn);
+		TreeNode node0 = new DefaultTreeNode(new Pair<Boolean, Comment>(false, comment), tn);
 		node0.setExpanded(true);
 
 		// Add dummy child
-		new DefaultTreeNode(new MutablePair<Boolean, Comment>(true, comment), node0);
+		new DefaultTreeNode(new Pair<Boolean, Comment>(true, comment), node0);
 
 		List<Comment> comments = comment.getAnswers();
 		
