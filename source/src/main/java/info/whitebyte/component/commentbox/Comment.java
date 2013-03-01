@@ -1,10 +1,13 @@
 package info.whitebyte.component.commentbox;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Comment {
+public class Comment implements Serializable{
+	private static final long serialVersionUID = -7901024765095281401L;
+	
 	private String id;
 	private String comment_text;
 	
