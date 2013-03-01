@@ -8,7 +8,7 @@
 	xmlns:wb="http://whitebyte.info/components">
 
 	<cc:interface componentType="info.whitebyte.component.commentbox">
-		<cc:attribute name="contextID" type="java.lang.String" />
+		<cc:attribute name="contextID" type="java.lang.String"/>
 		<cc:attribute name="emptyMessage" default="There are no comments yet." type="java.lang.String"/>
 		<cc:attribute name="userNotLoggedIn" default="You need to be logged in to create a comment." type="java.lang.String"/>
 		<cc:attribute name="comments" type="java.util.List" />		
@@ -18,9 +18,9 @@
 		<cc:attribute name="currentUserID" type="java.lang.Object" />
 		<cc:attribute name="currentUserUsername" type="java.lang.String" />
 		<cc:attribute name="currentUserAvatarUrl" type="java.lang.String" />
-		<cc:attribute name="canEditAll" type="java.lang.Boolean" default="false"/>
-		<cc:attribute name="canDeleteAll" type="java.lang.Boolean" default="false"/>
-		<cc:attribute name="enableLiveFeatures"	type="java.lang.Boolean" default="true"/>	
+		<cc:attribute name="canEditAll" type="java.lang.Boolean" />
+		<cc:attribute name="canDeleteAll" type="java.lang.Boolean" />
+		<cc:attribute name="enableLiveFeatures" default="true" type="java.lang.Boolean" />	
 		<cc:attribute name="onFetchNewComments" method-signature="void myAction()" />
 		<cc:attribute name="onFetchNewAnswers" method-signature="void myAction(info.whitebyte.component.commentbox.Comment)" />
 		<cc:attribute name="onCreateComment" method-signature="boolean myAction(info.whitebyte.component.commentbox.Comment)" />

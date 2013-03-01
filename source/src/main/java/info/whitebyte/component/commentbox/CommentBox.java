@@ -98,7 +98,7 @@ public class CommentBox extends UINamingContainer {
 	}
 	
 	private Boolean isEnableLiveFeatures() {
-		return getAttribute(PropertyKeys.enableLiveFeatures);
+		return Boolean.parseBoolean(getAttribute(PropertyKeys.enableLiveFeatures) + "");
 	}
 
 	// Getter and Setter End
