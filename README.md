@@ -68,7 +68,7 @@ to:
 * You can connect this component to your own user-system and your users don't need to have an account on your site and an additional account for the external system.
 
 
-## Used Resources
+## Credits
 
 * Fugue Icons - Yusuke Kamiyamane - http://p.yusukekamiyamane.com/
 * CLEditor YouTube Plugin v1.0.0 - Markus Horowski - http://www.terapix.de
