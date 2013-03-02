@@ -33,12 +33,6 @@ Other users are notified on new comments, replies and when other users type.
 ## Download
 [Here](https://buildhive.cloudbees.com/job/nickrussler/job/commentbox/ws/source/target/commentbox-0.0.1-SNAPSHOT.jar) you can download the latest jar
 
-## Why should i use it, i could use some external chat service?
-
-* You keep your data where it belongs, on your server !
-* Also you can (and are allowed to) make modifications to adapt to your special needs.
-* You can connect this component to your own user-system and your users don't need to have an account on your site and an additional account for the external system.
-
 ## First Steps
 
 I recomend to take a look at the [demo](https://github.com/nickrussler/commentbox/tree/master/demo-source) at first.
@@ -66,6 +60,13 @@ change the line:
 to:
 
 `<subsystem xmlns="urn:jboss:domain:web:1.1" native="true" [...]>`
+
+## Why should i use it, i could use some external chat service?
+
+* You keep your data where it belongs, on your server !
+* Also you can (and are allowed to) make modifications to adapt to your special needs.
+* You can connect this component to your own user-system and your users don't need to have an account on your site and an additional account for the external system.
+
 
 ## Used Resources
 
