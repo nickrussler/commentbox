@@ -58,10 +58,17 @@
 <h2>Dependencies</h2>
 
 <ul>
-<li>JSF 2.0+</li>
 <li>Primefaces</li>
-<li>Primefaces push (Athmosphere framework)</li>
-</ul><h2>Why should i use it, i could use some external chat service?</h2>
+</ul><h3>Optional Dependencies</h3>
+
+<ul>
+<li>Primefaces push (Atmosphere framework) - You need this when you want to use the live features (enabled by default)</li>
+<li>Add <a href="http://ocpsoft.org/prettytime/">prettyTime</a> and <a href="http://ocpsoft.org/prettytime/#section-6">prettytime-integration-jsf</a> to your project and commentbox will automatically use it to display time</li>
+</ul><h2>Download</h2>
+
+<p><a href="https://buildhive.cloudbees.com/job/nickrussler/job/commentbox/ws/source/target/commentbox-0.0.1-SNAPSHOT.jar">Here</a> you can download the latest jar</p>
+
+<h2>Why should i use it, i could use some external chat service?</h2>
 
 <ul>
 <li>You keep your data where it belongs, on your server !</li>
@@ -69,11 +76,23 @@
 <li>You can connect this component to your own user-system and your users don't need to have an account on your site and an additional account for the external system.</li>
 </ul><h2>First Steps</h2>
 
-<p>Create the needed datasource (commentboxDS) in the configs of your AS or rename the used datasource to one of yours (in persistence.xml).</p>
+<p>I recomend to take a look at the <a href="https://github.com/nickrussler/commentbox/tree/master/demo-source">demo</a> at first.</p>
 
-<p>Then simply deploy the demo project in any AS with eclipse or your IDE of choice.</p>
+<p>Just deploy the demo project in any AS with eclipse or your IDE of choice, and try out some features!</p>
 
-<p>In case of JBoss you need to adjust the standalone.xml to support atmosphere:</p>
+<h3>Extended Demo</h3>
+
+<p>After you played around with the demo you can start to use it immediatly or you can take a look at the <a href="https://github.com/nickrussler/commentbox/tree/master/extended-demo-source">extended demo</a>.</p>
+
+<p>In the extended demo a real database is used via JPA.</p>
+
+<p>Because of that you need to create a datasource (commentboxDS) in the configs of your AS or rename the used datasource to one of yours (in persistence.xml).</p>
+
+<p>Then deploy the demo project in any AS with eclipse or your IDE of choice.</p>
+
+<h2>Notice for JBoss usage</h2>
+
+<p>In case you use JBoss and want to use the live features you need to adjust the standalone.xml to support atmosphere:</p>
 
 <p>change the line:</p>
 
