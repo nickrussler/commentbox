@@ -56,8 +56,9 @@
 							<h:graphicImage rendered="#{not empty cc.attrs.currentUserAvatarUrl}" value="#{cc.attrs.currentUserAvatarUrl}" />
 						</div>	
 	
-						<div style="float: left;">						
-							<p:editor disabled="#{empty cc.attrs.currentUserID}" id="editor" styleClass="comment_editor comment_editor-height-hack" value="#{cc.new_comment_editor_text}" controls="bold italic underline strikethrough | image youtube | link unlink | source" height="120" width="600" widgetVar="editor"/>
+						<div style="float: left;">
+							<a class="username">#{cc.attrs.currentUserUsername}</a>						
+							<p:editor id="editor" styleClass="comment_editor comment_editor-height-hack" value="#{cc.new_comment_editor_text}" controls="bold italic underline strikethrough | image youtube | link unlink | source" height="120" width="600" widgetVar="editor"/>
 				
 							<h:panelGrid styleClass="comment_editorButtons" columns="2" style="margin-top:3px;display: none;">
 								<p:commandButton id="submitButton" styleClass="submitButton" widgetVar="submitButtonVar" value="Save" icon="ui-icon-disk" update=":#{cc.cid(cc.innerWrapper)}" onclick="submitButtonVar.disable();$('.ui-button-text', this).html('Submitting...');#{cc.id}_commentboxWrapper.initDiffNodes();" oncomplete="submitButtonVar.enable();$(#{cc.id}_commentboxWrapper.comment_id + ' .newCommentPanel .submitButton .ui-button-text').html('Save');editor.clear();#{cc.id}_commentboxWrapper.indicateNewNodes();#{cc.id}_commentboxWrapper.reShowEditors();#{cc.id}_commentboxWrapper.showNewRepliesText();" actionListener="#{cc.createComment(cc.attrs.onCreateComment)}" />
