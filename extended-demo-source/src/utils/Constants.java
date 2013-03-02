@@ -27,9 +27,9 @@ public class Constants {
 	public static String ARTICLE_VIEW="article_view";
 	public static String PROFILE="profile";
 
-	public static final int DEPLOYMENT_VERSION = 5;
+	public static final int DEPLOYMENT_VERSION = 6;
 
-	public static String MAIN_WEBSITE_URL="/commentbox-demo/";	
+	public static String MAIN_WEBSITE_URL="/commentbox-extended-demo/";	
 
 	public static String getApplicationUri() {
 		  try {

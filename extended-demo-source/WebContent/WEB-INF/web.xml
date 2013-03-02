@@ -4,22 +4,7 @@
   <servlet>
     <servlet-name>Push Servlet</servlet-name>
     <servlet-class>org.primefaces.push.PushServlet</servlet-class>
-    <init-param>
-      <param-name>org.atmosphere.useWebSocket</param-name>
-      <param-value>false</param-value>
-    </init-param>
-    <init-param>
-      <param-name>org.atmosphere.cpr.sessionSupport</param-name>
-      <param-value>true</param-value>
-    </init-param>
-    <init-param>
-      <param-name>org.atmosphere.useNative</param-name>
-      <param-value>true</param-value>
-    </init-param>
-    <init-param>
-      <param-name>org.atmosphere.resumeOnBroadcast</param-name>
-      <param-value>true</param-value>
-    </init-param>
+    <load-on-startup>1</load-on-startup>
     <async-supported>true</async-supported>
   </servlet>
   <servlet-mapping>

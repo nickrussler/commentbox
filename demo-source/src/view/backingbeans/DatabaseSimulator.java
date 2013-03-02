@@ -7,9 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
 
 import utils.SerializationUtils;
 
+@Named
 @ApplicationScoped
 public class DatabaseSimulator implements Serializable {
 	private static final long serialVersionUID = -4562076201196928335L;
