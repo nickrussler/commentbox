@@ -26,41 +26,6 @@
     <servlet-name>Push Servlet</servlet-name>
     <url-pattern>/primepush/*</url-pattern>
   </servlet-mapping>
-  <filter>
-    <filter-name>Character Encoding Filter</filter-name>
-    <filter-class>utils.CharacterEncodingFilter</filter-class>
-    <async-supported>true</async-supported>
-  </filter>
-  <filter-mapping>
-    <filter-name>Character Encoding Filter</filter-name>
-    <servlet-name>Faces Servlet</servlet-name>
-    <url-pattern>/*</url-pattern>
-    <dispatcher>REQUEST</dispatcher>
-    <dispatcher>FORWARD</dispatcher>
-    <dispatcher>ERROR</dispatcher>
-  </filter-mapping>
-  <filter>
-    <filter-name>Pretty Filter</filter-name>
-    <filter-class>com.ocpsoft.pretty.PrettyFilter</filter-class>
-    <async-supported>true</async-supported>
-  </filter>
-  <filter-mapping>
-    <filter-name>Pretty Filter</filter-name>
-    <url-pattern>/*</url-pattern>
-    <dispatcher>REQUEST</dispatcher>
-    <dispatcher>FORWARD</dispatcher>
-    <dispatcher>ERROR</dispatcher>
-  </filter-mapping>
-  <filter>
-    <filter-name>PrimeFaces FileUpload Filter</filter-name>
-    <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
-    <async-supported>true</async-supported>
-  </filter>
-  <filter-mapping>
-    <filter-name>PrimeFaces FileUpload Filter</filter-name>
-    <servlet-name>Faces Servlet</servlet-name>
-    <dispatcher>FORWARD</dispatcher>
-  </filter-mapping>
   <servlet>
     <servlet-name>Faces Servlet</servlet-name>
     <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -71,41 +36,7 @@
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>/faces/*</url-pattern>
   </servlet-mapping>
-  <servlet>
-    <servlet-name>imageServlet</servlet-name>
-    <servlet-class>utils.ImageServlet</servlet-class>
-    <async-supported>true</async-supported>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>imageServlet</servlet-name>
-    <url-pattern>/image/*</url-pattern>
-  </servlet-mapping>
-  <context-param>
-    <param-name>com.ocpsoft.pretty.DEVELOPMENT</param-name>
-    <param-value>true</param-value>
-  </context-param>
-  <context-param>
-    <param-name>javax.faces.PROJECT_STAGE</param-name>
-    <param-value>Development</param-value>
-  </context-param>
-  <context-param>
-    <param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
-    <param-value>true</param-value>
-  </context-param>
-  <context-param>
-    <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-    <param-value>server</param-value>
-  </context-param>
-  <context-param>
-    <param-name>com.sun.faces.numberOfViewsInSession</param-name>
-    <param-value>13</param-value>
-  </context-param>
-  <context-param>
-    <param-name>com.sun.faces.numberOfLogicalViews</param-name>
-    <param-value>13</param-value>
-  </context-param>
-  <session-config>
-    <session-timeout>45</session-timeout>
-    <tracking-mode>COOKIE</tracking-mode>
-  </session-config>
+  <welcome-file-list>
+    <welcome-file>faces/index.xhtml</welcome-file>
+  </welcome-file-list>
 </web-app>

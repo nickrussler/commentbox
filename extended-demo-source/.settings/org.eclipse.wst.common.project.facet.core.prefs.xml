@@ -4,4 +4,9 @@
       <attribute name="provider-id" value="runtime-library-provider"/>
     </node>
   </facet>
+  <facet id="jpt.jpa">
+    <node name="libprov">
+      <attribute name="provider-id" value="runtime-library-provider"/>
+    </node>
+  </facet>
 </root>

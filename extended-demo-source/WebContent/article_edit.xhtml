@@ -1,0 +1,135 @@
+<ui:composition template="/WEB-INF/template/base_template.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core" xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="dummy" />
+			<f:event type="preRenderView" listener="#{articleEdit.load}" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="head">
+		<style>
+			.minitip {
+				clear: left;
+				color: #AAAAAA;
+				display: block;
+				font-size: 0.8em;
+				margin-top: 2px;
+			}
+			
+			.ui-message-error {
+				margin-left: 0;
+			}
+		</style>
+
+		<script>	
+			function buttonsFixWait() {
+				buttonsPressedFix($('#editArticle\\:articletext .ui-editor-button'));
+			}
+		</script>
+	</ui:define>
+
+	<ui:define name="content">
+		<pe:tooltip forSelector=".requiredStar" value="Required" showEffect="fadeIn" hideEffect="fadeIn" />
+
+		<h:form id="editArticle" enctype="multipart/form-data" acceptcharset="UTF-8">
+			<p:panel header="#{(articleEdit.article_id==-1) ? 'New Article' : 'Edit Article'}">
+				<br />
+				<p:panel>
+					<div class="ui-panel-titlebar ui-corner-all" style="width: 901px; height: 11px; border: 1px solid #A8A8A8; background: #BF3E43; margin-left: -12px; margin-top: -6px;">
+						<div style="float: left; font-size: 12px; font-weight: 20; color: white; font-weight: bold; line-height: 10px; list-style-type: circle;">
+							<ul style="padding-left: 11px; margin-top: 0px; margin-bottom: 0px;">
+								<li>Required Information</li>
+							</ul>
+						</div>
+					</div>
+
+					<h:outputLabel for="title" value="Titel: " />
+					<label class="requiredStar"> *</label>
+					<br />
+					<p:inputText id="title" value="#{articleEdit.articleEditBean.title}" size="60" required="true" requiredMessage="Please enter a title!" />
+					<br />
+					<h:outputLabel for="title" value="Please enter the Titel of your project without any further details (website etc.)" class="minitip" />
+					<p:message for="title" />
+
+					<h:outputLabel for="articletext" value="Description: " />
+					<label class="requiredStar"> *</label>
+					<br />
+					<p:editor id="articletext" value="#{articleEdit.articleEditBean.articletext}" controls="bold italic underline strikethrough link unlink" required="true" requiredMessage="Please enter a description!" width="698" widgetVar="editor" />
+					<h:outputLabel for="articletext" value="A simple and short description of your Project. Please no huge copy pastes.." class="minitip" />
+					<p:message for="articletext" />
+
+					<p:commandButton id="clearButton" type="button" value="Clear" onclick="editor.clear()" icon="ui-icon-close" />
+				</p:panel>
+				<br />
+				<p:panel>
+					<div class="ui-panel-titlebar ui-corner-all" style="width: 901px; height: 11px; border: 1px solid #A8A8A8; background: #BF7C40; margin-left: -12px; margin-top: -6px;">
+						<div style="float: left; font-size: 12px; font-weight: 20; color: white; font-weight: bold; line-height: 10px; list-style-type: circle;">
+							<ul style="padding-left: 11px; margin-top: 0px; margin-bottom: 0px;">
+								<li>Optional Information</li>
+							</ul>
+						</div>
+					</div>
+					<br />
+					<p:panel id="websitelink_panel_id" visible="true" closable="true" closeSpeed="0" widgetVar="websitelink_panel" styleClass="aPanel">
+						<h:outputLabel for="websitelink" value="Project Website: " />
+						<br />
+						<p:inputText id="websitelink" size="60" value="#{articleEdit.articleEditBean.websitelink}" />
+						<br />
+						<h:outputLabel for="websitelink" value="You can provide a link to the projects Homepage here." class="minitip" />
+						<p:message for="websitelink" />
+						<br />
+					</p:panel>
+
+
+
+					<p:outputPanel id="photo_panel_id">
+						<h:outputLabel for="photolink" value="Image URL: " />
+						<br />
+						<p:inputText id="photolink" size="60" value="#{articleEdit.articleEditBean.photolink}" />
+						<br />
+						<h:outputLabel for="photolink" value="You can either add an image from Internet or from a local file, for example an screenshot or your logo." class="minitip" />
+						<p:message for="photolink" />
+						<br />
+
+						<h:outputLabel for="imageUpload" value="Local Image:  " />
+						<br />
+						<p:fileUpload id="imageUpload" value="#{articleEdit.uploadedFile}" mode="simple">
+							<f:validator validatorId="customvalidators.UploadValidator" />
+						</p:fileUpload>
+						<br />
+						<h:outputLabel for="imageUpload" value="You can either add an image from Internet or from a local file, for example an screenshot or your logo." class="minitip" />
+						<p:message for="imageUpload" />
+						<br />
+						<p:panel id="edit_panel3_id" rendered="#{articleEdit.edit and (not empty articleEdit.articleEditBean.photofilepath)}" styleClass="aPanel">
+							<h:outputLabel for="uploadedImage" value="Current image: " />
+							<br />
+							<h:graphicImage id="uploadedImage" value="/image/#{articleEdit.articleEditBean.photofilepath}" />
+							<br />
+						</p:panel>
+					</p:outputPanel>
+				</p:panel>
+
+				<br />
+
+				
+				<p:commandButton rendered="#{articleEdit.new}" ajax="false" value="Create" onclick="$(this).addClass('ui-state-disabled').removeClass('ui-state-hover');$('.ui-button-text', this).html('Submitting...');" action="#{articleEdit.create()}" />
+
+				<p:outputPanel rendered="#{articleEdit.edit}" >
+					<p:commandButton ajax="false" value="Save" onclick="$(this).addClass('ui-state-disabled').removeClass('ui-state-hover');$('.ui-button-text', this).html('Submitting...');" action="#{articleEdit.save()}" />
+	
+					<p:commandButton immediate="true" ajax="false" value="Remove" action="#{articleEdit.delete2()}" />				
+				</p:outputPanel>
+				
+				<p:commandButton immediate="true" ajax="false" value="Cancel" action="#{articleEdit.cancel()}" />
+
+			</p:panel>
+		</h:form>
+
+		<script>
+			$(function(){
+				buttonsFixWait();
+			});
+		</script>
+	</ui:define>
+</ui:composition>
