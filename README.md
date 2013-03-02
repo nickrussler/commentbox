@@ -23,9 +23,12 @@ Other users are notified on new comments, replies and when other users type.
 
 ## Dependencies
 
-* JSF 2.0+
 * Primefaces
-* Primefaces push (Athmosphere framework)
+ 
+### Optional Dependencies
+
+* Primefaces push (Atmosphere framework) - You need this when you want to use the live features (enabled by default)
+* Add [prettyTime](http://ocpsoft.org/prettytime/) and [prettytime-integration-jsf](http://ocpsoft.org/prettytime/#section-6) to your project and commentbox will automatically use it to display time
 
 ## Download
 [Here](https://buildhive.cloudbees.com/job/nickrussler/job/commentbox/ws/source/target/commentbox-0.0.1-SNAPSHOT.jar) you can download the latest jar
@@ -36,13 +39,19 @@ Other users are notified on new comments, replies and when other users type.
 * Also you can (and are allowed to) make modifications to adapt to your special needs.
 * You can connect this component to your own user-system and your users don't need to have an account on your site and an additional account for the external system.
 
-## First Steps for Simple Demo
+## First Steps
 
-Just deploy the simple demo project in any AS with eclipse or your IDE of choice.
+I recomend to take a look at the [demo](https://github.com/nickrussler/commentbox/tree/master/demo-source) at first.
 
-## First Steps for Extended Demo
+Just deploy the demo project in any AS with eclipse or your IDE of choice, and try out some features!
 
-Create the needed datasource (commentboxDS) in the configs of your AS or rename the used datasource to one of yours (in persistence.xml).
+### Extended Demo
+
+After you played around with the demo you can start to use it immediatly or you can take a look at the [extended demo](https://github.com/nickrussler/commentbox/tree/master/extended-demo-source).
+
+In the extended demo a real database is used via JPA.
+
+Because of that you need to create a datasource (commentboxDS) in the configs of your AS or rename the used datasource to one of yours (in persistence.xml).
 
 Then deploy the demo project in any AS with eclipse or your IDE of choice.
 
