@@ -129,10 +129,10 @@
 														</li>
 													</p:outputPanel>								
 																						
-													<p:outputPanel rendered="#{(not empty onEditComment) and ((not empty cc.attrs.currentUserID) and ((wrapper.right.user_id eq cc.attrs.currentUserID) or cc.attrs.canEditAll))}">
+													<p:outputPanel rendered="#{(not empty cc.attrs.onEditComment) and ((not empty cc.attrs.currentUserID) and ((wrapper.right.user_id eq cc.attrs.currentUserID) or cc.attrs.canEditAll))}">
 														<li class="bullet">•</li>
 														<li class="action lockondelete">
-															<a href="javascript:void(0)" rel="nofollow" class="#{wrapper.right.deleted ? 'clickedLink' : ''}" onclick="#{cc.id}_commentboxWrapper.saveCurrentEditComment(#{wrapper.right.id});#{cc.id}_commentboxWrapper.showInlineEditor()">Edit </a>
+															<a href="javascript:void(0)" rel="nofollow" class="#{wrapper.right.deleted ? 'clickedLink' : ''}" onclick="#{cc.id}_commentboxWrapper.saveCurrentEditComment(#{wrapper.right.id});#{cc.id}_commentboxWrapper.showInlineEditor();inlineEditorVar.saveHTML();">Edit </a>
 														</li>
 														
 													</p:outputPanel>
@@ -227,7 +227,7 @@
 			
 			<h:form id="answerEditorForm" styleClass="answerEditorForm" style="height: 0px; overflow: hidden">
 				<p:editor id="inlineEditor" styleClass="commentseditor inlineEditor answerEditor" value="#{cc.answer_comment_editor_text}" controls="bold italic underline strikethrough | image youtube | link unlink | source" height="120" width="600" widgetVar="answerEditorVar" />
-				<p:commandButton id="submitButton" ajax="true" value="Save" icon="ui-icon-disk" update=":#{cc.cid(cc.innerWrapper)}" actionListener="#{cc.answerComment(cc.attrs.onCreateAnswer)}" onclick="#{cc.id}_commentboxWrapper.submitAnswer();#{cc.id}_commentboxWrapper.initDiffNodes();" oncomplete="answerEditorVar.clear();#{cc.id}_commentboxWrapper.indicateNewNodes();"/>
+				<p:commandButton id="submitButton" ajax="true" value="Save" icon="ui-icon-disk" update=":#{cc.cid(cc.innerWrapper)}" actionListener="#{cc.answerComment(cc.attrs.onCreateAnswer)}" onclick="#{cc.id}_commentboxWrapper.submitAnswer();#{cc.id}_commentboxWrapper.initDiffNodes();" oncomplete="answerEditorVar.clear();#{cc.id}_commentboxWrapper.reShowEditors();#{cc.id}_commentboxWrapper.indicateNewNodes();"/>
 				<p:commandButton id="clearButton" type="button" value="Clear" onclick="answerEditorVar.clear();" icon="ui-icon-close" />
 				<p:commandButton id="cancelButton" type="button" value="Cancel" onclick="#{cc.id}_commentboxWrapper.cancelCreateAnswer();" icon="ui-icon-close" />
 				<input id="currentAnswerComment" type="hidden" value="" name="currentAnswerComment"/>

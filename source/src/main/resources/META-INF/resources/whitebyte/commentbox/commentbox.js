@@ -64,7 +64,7 @@ function commentboxWidget(ccid, userid) {
 		}
 
 		if (_self.isEditEditorVisible) {
-			_self.showInlineEditor();
+			_self.showInlineEditor(true);
 		}
 	};
 
@@ -97,7 +97,9 @@ function commentboxWidget(ccid, userid) {
         });
 
         for (var i = 0; i < diffNodes.length; i++) {              	
-            $(_self.comment_id + ' .' + diffNodes[i].replace(/:/g, '\\:')).find('.newIndicator').show().fadeOut(10000);
+            $(_self.comment_id + ' .' + diffNodes[i].replace(/:/g, '\\:')).find('.newIndicator').show().fadeOut(10000, function() {
+            	_self.repositionEditors();
+            });
         }
 	};
 
@@ -125,7 +127,7 @@ function commentboxWidget(ccid, userid) {
 		$(_self.comment_id + ' .inlineEditorForm #currentEditComment').attr('value', CommentID);
 	};
 	
-	this.showInlineEditor = function () {
+	this.showInlineEditor = function (isReshow) {
 		var comment = $(_self.comment_id + ' .inlineEditorForm #currentEditComment').attr('value');
 			
 		_self.isEditEditorVisible = true;	
@@ -136,9 +138,12 @@ function commentboxWidget(ccid, userid) {
 		_self.resizefunc_edit = function() {
 			$(_self.comment_id + ' .inlineEditorForm').attr('style', '').css($(_self.comment_id + ' .comment-' + comment + ' .body .commentEditorDiv').first().offset()).css('position', 'absolute');
 		};		
-		_self.repositionEditors();													
-		$(_self.comment_id + ' .inlineEditorForm .inlineEditor iframe').contents().find('body').html($(_self.comment_id + ' .comment-' + comment + ' .body .comment-text').html());
-
+		_self.repositionEditors();
+		
+		if (!isReshow) {		
+			$(_self.comment_id + ' .inlineEditorForm .inlineEditor iframe').contents().find('body').html($(_self.comment_id + ' .comment-' + comment + ' .body .comment-text').html());
+		}
+		
 		_self.scrollToIfNotInView($(_self.comment_id + ' .commentEditorDiv'));
 	};
 
@@ -186,7 +191,6 @@ function commentboxWidget(ccid, userid) {
 		
 		$(_self.comment_id + ' .answerEditorForm').attr('style', 'height: 0px; overflow: hidden');
 		$(_self.comment_id + ' .commentAnswerDivWrapper').css('display', 'none');
-		_self.repositionEditors();
 	};
 
 	this.cancelCreateAnswer = function () {	
