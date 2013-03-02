@@ -76,12 +76,7 @@ public class DatabaseSimulator implements Serializable {
 		comment.setId(this.uniqueID + "");
 		this.uniqueID++;
 		
-		System.out.println(this.findCommentByID(parent.getId()).getAnswers().size());
-		System.out.println("##############einmal!" + comment.getId());
-		
 		this.findCommentByID(parent.getId()).getAnswers().add(0, SerializationUtils.cloneObject(comment));
-		
-		System.out.println(this.findCommentByID(parent.getId()).getAnswers().size());
 	}
 	
 	public void likeComment(Comment comment) {
