@@ -25,15 +25,15 @@ public class ArticleView implements Serializable{
 	
 	// Comments Begin
 	private Long commentsPerPage = 5L;
-	private Long commentsPage = 0L;
+	private Long commentsPage = 1L;
 	private Long commentCount;
 	
 	private List<Comment> comments;
 	// Comments End
 	
 	private void loadRootComments() {
-		comments = dbSimulator.getComments(commentsPage*commentsPerPage, commentsPerPage);
-		commentCount = (long) comments.size();
+		comments = dbSimulator.getRootComments((commentsPage - 1L)*commentsPerPage, commentsPerPage);
+		commentCount = dbSimulator.getRootCommentCount();
 	}
 	
 	@PostConstruct

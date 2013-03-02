@@ -17,7 +17,7 @@ public class DatabaseSimulator implements Serializable {
 	private List<Comment> comments = new ArrayList<Comment>();
 	private int uniqueID = 0;
 
-	public List<Comment> getComments(Long start, Long count) {
+	public List<Comment> getRootComments(Long start, Long count) {
 		int startInt = start.intValue();
 		int endInt = start.intValue() + count.intValue();
 		
@@ -26,6 +26,11 @@ public class DatabaseSimulator implements Serializable {
 		}
 		
 		return SerializationUtils.cloneObject(new ArrayList<Comment>(this.comments.subList(startInt, endInt)));
+	}
+	
+	
+	public Long getRootCommentCount() {
+		return (long) this.comments.size();
 	}
 	
 	private Comment _findCommentByID(Comment parent, String commentid) {
