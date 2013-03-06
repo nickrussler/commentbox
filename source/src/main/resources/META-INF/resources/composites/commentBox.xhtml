@@ -101,9 +101,8 @@
 													</p:outputPanel>
 												</span>
 												
-												<span class="bullet">•</span>
-												
-												<p:outputPanel id="comment-likecount">
+												<p:outputPanel id="comment-likecount" rendered="#{not empty cc.attrs.onCommentLike}">
+													<span class="bullet">•</span>
 													<span class="info">Likes: #{wrapper.right.likecount}</span>
 												</p:outputPanel>
 											</header>
