@@ -35,6 +35,10 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 			</resource>
+			<resource>  
+				<directory>src/main/messages</directory>
+				<targetPath>META-INF/resources/composites</targetPath>
+			</resource>
 		</resources>
 		<plugins>
 			<plugin>

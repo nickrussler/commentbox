@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import javax.el.ELContext;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
+import javax.faces.application.ProjectStage;
 import javax.faces.application.ResourceDependencies;
 import javax.faces.application.ResourceDependency;
 import javax.faces.component.FacesComponent;
@@ -45,7 +46,7 @@ public class CommentBox extends UINamingContainer {
 		contextID, emptyMessage, comments, currentPage, commentsPerPage, commentCount, currentUserID, currentUserUsername, currentUserAvatarUrl, canEditAll, canDeleteAll, enableLiveFeatures
 	}
 
-	String new_comment_editor_text = "<span style=\"font-family: Arial, Verdana; font-size: 13px;\"><font color=\"#666666\">Leave a comment...</font></span>";
+	String new_comment_editor_text;
 	String edit_comment_editor_text;
 	String answer_comment_editor_text;
 
@@ -105,9 +106,11 @@ public class CommentBox extends UINamingContainer {
 
 	// Utils Start
 	
-	public static void log(String source, String msg) {
-		// Disable logging for now
-		Logger.getLogger(source).info(msg);
+	public static void log(String msg) {
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		if (ctx.isProjectStage(ProjectStage.Development)) {
+			Logger.getLogger("CommentBox").info(msg);
+		}
 	}
 	
 	public void push(String msg) {
@@ -115,7 +118,7 @@ public class CommentBox extends UINamingContainer {
 			return;
 		}
 		
-		log("", "push: " + msg);
+		log("push: " + msg);
 		
 		PushContext pushContext = PushContextFactory.getDefault().getPushContext();		
         pushContext.push("/commentboxpush-" + this.getClientId() + "-" + this.getContextID(), msg);
@@ -131,6 +134,20 @@ public class CommentBox extends UINamingContainer {
 		ELContext elContext = facesContext.getELContext();
 
 		return me.invoke(elContext, params);
+	}
+	
+	private static String mapToJSON(Map<String, String> map) {
+		String json = "{";
+		String iterator = "";
+		
+		for (String k : map.keySet()) {
+			json += iterator + "\"" + k + "\"" + ":" + "\"" + map.get(k) + "\"";
+			iterator = ",";
+		}
+		
+		json += "}";
+		
+		return json;
 	}
 
 	// Utils End
@@ -189,7 +206,7 @@ public class CommentBox extends UINamingContainer {
 	}
 	
 	public void fetchNewComments(MethodExpression onFetchNewComments) {
-		log("", "fetchNewComments");
+		log("fetchNewComments");
 
 		if (onFetchNewComments != null) {
 			executeMethodExpression(onFetchNewComments, new Object[] {});
@@ -200,7 +217,7 @@ public class CommentBox extends UINamingContainer {
 	}
 	
 	public void fetchNewAnswers(MethodExpression onFetchNewAnswers) {
-		log("", "fetchNewAnswers");
+		log("fetchNewAnswers");
 		
 		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		String answerID = params.get("currentAnswerComment");
@@ -225,7 +242,7 @@ public class CommentBox extends UINamingContainer {
 	}
 
 	public void createComment(MethodExpression onCreateComment) {
-		log("", "createComment");
+		log("createComment");
 		
 		boolean insertComment = false;
 
@@ -253,7 +270,7 @@ public class CommentBox extends UINamingContainer {
 	}
 
 	public void deleteComment(MethodExpression onCommentDelete, Comment comment) {
-		log("", "deleteComment: " + comment);
+		log("deleteComment: " + comment);
 
 		comment.setComment_text("<i>This commented was deleted by the Author</i>");
 		comment.setDeleted(true);
@@ -264,7 +281,7 @@ public class CommentBox extends UINamingContainer {
 	}
 
 	public void editComment(MethodExpression onEditComment) {
-		log("", "editComment");
+		log("editComment");
 
 		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		String editID = params.get("currentEditComment");
@@ -283,7 +300,7 @@ public class CommentBox extends UINamingContainer {
 	}
 
 	public void answerComment(MethodExpression onCreateAnswer) {
-		log("", "answerComment");
+		log("answerComment");
 
 		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		String answerID = params.get("currentAnswerComment");
@@ -308,7 +325,7 @@ public class CommentBox extends UINamingContainer {
 	}
 
 	public void likeComment(MethodExpression onLikeComment, Comment comment) {
-		log("", "likeComment");
+		log("likeComment");
 
 		comment.setLikecount(comment.getLikecount() + 1);
 
@@ -318,7 +335,7 @@ public class CommentBox extends UINamingContainer {
 	}
 
 	public void spamComment(MethodExpression onSpamComment, Comment comment) {
-		log("", "spamComment");
+		log("spamComment");
 
 		comment.setSpamcount(comment.getSpamcount() + 1);
 
@@ -378,6 +395,11 @@ public class CommentBox extends UINamingContainer {
 	}
 
 	public String getNew_comment_editor_text() {
+		// initialize here because getResourceBundleMap return null on construction time	
+		if (this.new_comment_editor_text == null) {
+			this.new_comment_editor_text = "<span style=\"font-family: Arial, Verdana; font-size: 13px;\"><font color=\"#666666\">" + this.getResourceBundleMap().get("commentbox.editor.notclicked") + "</font></span>";
+		}
+		
 		return new_comment_editor_text;
 	}
 
@@ -421,5 +443,9 @@ public class CommentBox extends UINamingContainer {
 
 	public Long getLastPage() {
 		return (long) Math.ceil((double) this.getCommentCount() / (double) this.getCommentsPerPage());
+	}
+	
+	public String getMessageBundleAsJSON() {
+		return mapToJSON(this.getResourceBundleMap());
 	}
 }

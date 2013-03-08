@@ -1,4 +1,4 @@
-function commentboxWidget(ccid, userid) {
+function commentboxWidget(ccid, userid, jsonMsg) {
 	
 	var _self = this;
 	
@@ -16,6 +16,11 @@ function commentboxWidget(ccid, userid) {
 
 	this.newAnswers = {};
 
+	String.prototype.format = function () {
+		var args = arguments;
+		return this.replace(/\{(\d+)\}/g, function (m, n) { return args[n]; });
+	};
+	
 	this.rcUserTyping_callback = function(){};
 
 	this.init = function () {		
@@ -202,7 +207,7 @@ function commentboxWidget(ccid, userid) {
 	};
 
 	this.deleteComment = function (comment) {
-		$(_self.comment_id + ' .comment-' + comment +' .body .comment-text').html('<i>This comment was deleted by the Author</i>');
+		$(_self.comment_id + ' .comment-' + comment +' .body .comment-text').html('<i>' + jsonMsg['commentbox.comments.comment.deletedmsg'] +'</i>');
 		$(_self.comment_id + ' .comment-' + comment +' .body footer .action.lockondelete a').addClass('clickedLink');
 	};
 
@@ -308,7 +313,7 @@ function commentboxWidget(ccid, userid) {
 
 		var typingcount = tmp.length - 1;
 		if (typingcount > 0) {						
-			var typing_message = (typingcount == 1) ? 'One typing User' : typingcount + ' typing Users';
+			var typing_message = (typingcount == 1) ? jsonMsg['commentbox.comments.comment.typinguser.single'] : jsonMsg['commentbox.comments.comment.typinguser.multiple'].format(typingcount)
 			$typingContainer.find('a').html(typing_message);
 			$typingContainer.show();
 		} else {
@@ -357,7 +362,7 @@ function commentboxWidget(ccid, userid) {
 			var $updateAnswersPanel = $(_self.comment_id + ' .comment-' + i + ' .updateAnswersPanel');
 
 			if (val > 0) {
-				var new_reply_message = (val == 1) ? 'Show One new reply' : 'Show ' + val + ' new replies';							
+				var new_reply_message = (val == 1) ? jsonMsg['commentbox.comments.comment.newreply.single'] : jsonMsg['commentbox.comments.comment.newreplies.multiple'].format(val);							
 				$updateAnswersPanel.find('.getReplies').html(new_reply_message);
 				$updateAnswersPanel.fadeIn('slow');
 			} else {
@@ -376,7 +381,7 @@ function commentboxWidget(ccid, userid) {
 					var newCommentCount = parseInt($hiddenNewComments.html()) + 1;
 					$hiddenNewComments.html(newCommentCount);
 					
-					var new_comments_message = (newCommentCount == 1) ? 'Show One new Comment' : 'Show ' + newCommentCount + ' new Comments';							
+					var new_comments_message = (newCommentCount == 1) ? jsonMsg['commentbox.comments.comment.new.single'] : jsonMsg['commentbox.comments.comment.new.multiple'].format(newCommentCount);							
 					$(_self.comment_id + ' .updateRootButton').fadeIn('slow').find('.ui-button-text').html(new_comments_message);
 					_self.repositionEditors();
 				}
@@ -422,7 +427,7 @@ function commentboxWidget(ccid, userid) {
 
 				var typingcount = typing_array.length - 1;
 				if (typingcount > 0) {						
-					var typing_message = (typingcount == 1) ? 'One typing User' : typingcount + ' typing Users';
+					var typing_message = (typingcount == 1) ? jsonMsg['commentbox.comments.comment.typinguser.single'] : jsonMsg['commentbox.comments.comment.typinguser.multiple'].format(typingcount);
 					$typingContainer.find('a').html(typing_message);
 					$typingContainer.show();
 				}

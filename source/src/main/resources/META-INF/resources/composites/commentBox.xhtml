@@ -9,8 +9,8 @@
 
 	<cc:interface componentType="info.whitebyte.component.commentbox">
 		<cc:attribute name="contextID" type="java.lang.String"/>
-		<cc:attribute name="emptyMessage" default="There are no comments yet." type="java.lang.String"/>
-		<cc:attribute name="userNotLoggedIn" default="You need to be logged in to create a comment." type="java.lang.String"/>
+		<cc:attribute name="emptyMessage" default="#{cc.resourceBundleMap['commentbox.comments.empty']}" type="java.lang.String"/>
+		<cc:attribute name="userNotLoggedIn" default="#{cc.resourceBundleMap['commentbox.user.empty']}" type="java.lang.String"/>
 		<cc:attribute name="comments" type="java.util.List" />		
 		<cc:attribute name="currentPage" type="java.lang.Long" />
 		<cc:attribute name="commentsPerPage" type="java.lang.Long" />
@@ -61,8 +61,8 @@
 							<p:editor id="editor" styleClass="comment_editor comment_editor-height-hack" value="#{cc.new_comment_editor_text}" controls="bold italic underline strikethrough | image youtube | link unlink | source" height="120" width="600" widgetVar="editor"/>
 				
 							<h:panelGrid styleClass="comment_editorButtons" columns="2" style="margin-top:3px;display: none;">
-								<p:commandButton id="submitButton" styleClass="submitButton" widgetVar="submitButtonVar" value="Save" icon="ui-icon-disk" update=":#{cc.cid(cc.innerWrapper)}" onclick="submitButtonVar.disable();$('.ui-button-text', this).html('Submitting...');#{cc.id}_commentboxWrapper.initDiffNodes();" oncomplete="submitButtonVar.enable();$(#{cc.id}_commentboxWrapper.comment_id + ' .newCommentPanel .submitButton .ui-button-text').html('Save');editor.clear();#{cc.id}_commentboxWrapper.indicateNewNodes();#{cc.id}_commentboxWrapper.reShowEditors();#{cc.id}_commentboxWrapper.showNewRepliesText();" actionListener="#{cc.createComment(cc.attrs.onCreateComment)}" />
-								<p:commandButton id="clearButton" type="button" value="Clear" onclick="editor.clear()" icon="ui-icon-close" />
+								<p:commandButton id="submitButton" styleClass="submitButton" widgetVar="submitButtonVar" value="#{cc.resourceBundleMap['commentbox.editor.save']}" icon="ui-icon-disk" update=":#{cc.cid(cc.innerWrapper)}" onclick="submitButtonVar.disable();$('.ui-button-text', this).html('Submitting...');#{cc.id}_commentboxWrapper.initDiffNodes();" oncomplete="submitButtonVar.enable();$(#{cc.id}_commentboxWrapper.comment_id + ' .newCommentPanel .submitButton .ui-button-text').html('Save');editor.clear();#{cc.id}_commentboxWrapper.indicateNewNodes();#{cc.id}_commentboxWrapper.reShowEditors();#{cc.id}_commentboxWrapper.showNewRepliesText();" actionListener="#{cc.createComment(cc.attrs.onCreateComment)}" />
+								<p:commandButton id="clearButton" type="button" value="#{cc.resourceBundleMap['commentbox.editor.clear']}" onclick="editor.clear()" icon="ui-icon-close" />
 							</h:panelGrid>					
 						</div>
 					</h:form>					
@@ -103,7 +103,7 @@
 												
 												<p:outputPanel id="comment-likecount" rendered="#{not empty cc.attrs.onCommentLike}">
 													<span class="bullet">•</span>
-													<span class="info">Likes: #{wrapper.right.likecount}</span>
+													<span class="info">#{cc.resourceBundleMap['commentbox.comments.comment.likecount']}: #{wrapper.right.likecount}</span>
 												</p:outputPanel>
 											</header>
 											
@@ -118,21 +118,21 @@
 													<p:outputPanel rendered="#{(not empty cc.attrs.onCommentLike) and (not empty cc.attrs.currentUserID)}">
 														<li class="bullet">•</li>
 														<li class="action lockondelete">
-															<p:commandLink value="Like" update="comment-likecount" styleClass="#{wrapper.right.deleted ? 'clickedLink' : ''}" onclick="$(this).addClass('clickedLink')" actionListener="#{cc.likeComment(cc.attrs.onCommentLike, wrapper.right)}" />
+															<p:commandLink value="#{cc.resourceBundleMap['commentbox.comments.comment.like']}" update="comment-likecount" styleClass="#{wrapper.right.deleted ? 'clickedLink' : ''}" onclick="$(this).addClass('clickedLink')" actionListener="#{cc.likeComment(cc.attrs.onCommentLike, wrapper.right)}" />
 														</li>									
 													</p:outputPanel>
 													
 													<p:outputPanel rendered="#{(not empty cc.attrs.onCommentSpam) and (not empty cc.attrs.currentUserID)}">
 														<li class="bullet">•</li>
 														<li class="action lockondelete">
-															<p:commandLink value="Spam" styleClass="#{wrapper.right.deleted ? 'clickedLink' : ''}" onclick="$(this).addClass('clickedLink')" actionListener="#{cc.spamComment(cc.attrs.onCommentSpam, wrapper.right)}" />
+															<p:commandLink value="#{cc.resourceBundleMap['commentbox.comments.comment.spam']}" styleClass="#{wrapper.right.deleted ? 'clickedLink' : ''}" onclick="$(this).addClass('clickedLink')" actionListener="#{cc.spamComment(cc.attrs.onCommentSpam, wrapper.right)}" />
 														</li>
 													</p:outputPanel>								
 																						
 													<p:outputPanel rendered="#{(not empty cc.attrs.onEditComment) and ((not empty cc.attrs.currentUserID) and ((wrapper.right.user_id eq cc.attrs.currentUserID) or cc.attrs.canEditAll))}">
 														<li class="bullet">•</li>
 														<li class="action lockondelete">
-															<a href="javascript:void(0)" rel="nofollow" class="#{wrapper.right.deleted ? 'clickedLink' : ''}" onclick="#{cc.id}_commentboxWrapper.saveCurrentEditComment(#{wrapper.right.id});#{cc.id}_commentboxWrapper.showInlineEditor();inlineEditorVar.saveHTML();">Edit </a>
+															<a href="javascript:void(0)" rel="nofollow" class="#{wrapper.right.deleted ? 'clickedLink' : ''}" onclick="#{cc.id}_commentboxWrapper.saveCurrentEditComment(#{wrapper.right.id});#{cc.id}_commentboxWrapper.showInlineEditor();inlineEditorVar.saveHTML();">#{cc.resourceBundleMap['commentbox.comments.comment.edit']}</a>
 														</li>
 														
 													</p:outputPanel>
@@ -140,21 +140,21 @@
 													<p:outputPanel rendered="#{(not empty cc.attrs.onCommentDelete) and ((not empty cc.attrs.currentUserID) and ((wrapper.right.user_id eq cc.attrs.currentUserID) or cc.attrs.canDeleteAll))}">
 														<li class="bullet">•</li>
 														<li class="action lockondelete">
-															<p:commandLink value="Delete" styleClass="#{wrapper.right.deleted ? 'clickedLink' : ''}" onclick="#{cc.id}_commentboxWrapper.deleteComment(#{wrapper.right.id})" actionListener="#{cc.deleteComment(cc.attrs.onCommentDelete, wrapper.right)}" />
+															<p:commandLink value="#{cc.resourceBundleMap['commentbox.comments.comment.delete']}" styleClass="#{wrapper.right.deleted ? 'clickedLink' : ''}" onclick="#{cc.id}_commentboxWrapper.deleteComment(#{wrapper.right.id})" actionListener="#{cc.deleteComment(cc.attrs.onCommentDelete, wrapper.right)}" />
 														</li>
 													</p:outputPanel>
 													
 													<p:outputPanel rendered="#{(not empty cc.attrs.onCreateAnswer) and (not empty cc.attrs.currentUserID)}">
 														<li class="bullet">•</li>
 														<li class="action lockondelete">
-															<a href="javascript:void(0)" rel="nofollow" class="#{wrapper.right.deleted ? 'clickedLink' : ''}" onclick="#{cc.id}_commentboxWrapper.saveCurrentAnswerComment(#{wrapper.right.id});#{cc.id}_commentboxWrapper.showAnswerEditor();">Reply</a>
+															<a href="javascript:void(0)" rel="nofollow" class="#{wrapper.right.deleted ? 'clickedLink' : ''}" onclick="#{cc.id}_commentboxWrapper.saveCurrentAnswerComment(#{wrapper.right.id});#{cc.id}_commentboxWrapper.showAnswerEditor();">#{cc.resourceBundleMap['commentbox.comments.comment.reply']}</a>
 														</li>
 													</p:outputPanel>											
 													
 													<p:outputPanel styleClass="updateAnswersPanel updateAnswersPanel-#{wrapper.right.id}" style="display: none;">
 														<li class="bullet">•</li>
 														<li class="action">												
-															<a href="javascript:void(0)" rel="nofollow" class="getReplies" onclick="var commentid = $(this).closest('div.comment').attr('data-commentid');$(#{cc.id}_commentboxWrapper.comment_id + ' .rcGetAnswersForm').find('[name=\'currentAnswerComment\']').val(commentid);rcGetAnswers();#{cc.id}_commentboxWrapper.updateNodes(treeVar, $(this).closest('.ui-treenode'));$(this).closest('.updateAnswersPanel').css('display', 'none'); delete #{cc.id}_commentboxWrapper.newAnswers[commentid];">Show new replies</a>
+															<a href="javascript:void(0)" rel="nofollow" class="getReplies" onclick="var commentid = $(this).closest('div.comment').attr('data-commentid');$(#{cc.id}_commentboxWrapper.comment_id + ' .rcGetAnswersForm').find('[name=\'currentAnswerComment\']').val(commentid);rcGetAnswers();#{cc.id}_commentboxWrapper.updateNodes(treeVar, $(this).closest('.ui-treenode'));$(this).closest('.updateAnswersPanel').css('display', 'none'); delete #{cc.id}_commentboxWrapper.newAnswers[commentid];">Show # new replies</a>
 														</li>
 													</p:outputPanel>
 													
@@ -219,17 +219,17 @@
 			
 			<h:form id="inlineEditorForm" styleClass="inlineEditorForm" style="height: 0px; overflow: hidden">
 				<p:editor id="inlineEditor" styleClass="commentseditor inlineEditor" value="#{cc.edit_comment_editor_text}" controls="bold italic underline strikethrough | image youtube | link unlink | source" height="120" width="600" widgetVar="inlineEditorVar" />
-				<p:commandButton id="submitButton" value="Save" icon="ui-icon-disk" actionListener="#{cc.editComment(cc.attrs.onEditComment)}" onclick="#{cc.id}_commentboxWrapper.submitEdit();#{cc.id}_commentboxWrapper.initDiffNodes();" oncomplete="inlineEditorVar.clear();#{cc.id}_commentboxWrapper.indicateNewNodes();"/>
-				<p:commandButton id="clearButton" type="button" value="Clear" onclick="inlineEditorVar.clear()" icon="ui-icon-close" />
-				<p:commandButton id="cancelButton" type="button" value="Cancel" onclick="#{cc.id}_commentboxWrapper.cancelEdit();" icon="ui-icon-close" />
+				<p:commandButton id="submitButton" value="#{cc.resourceBundleMap['commentbox.editor.save']}" icon="ui-icon-disk" actionListener="#{cc.editComment(cc.attrs.onEditComment)}" onclick="#{cc.id}_commentboxWrapper.submitEdit();#{cc.id}_commentboxWrapper.initDiffNodes();" oncomplete="inlineEditorVar.clear();#{cc.id}_commentboxWrapper.indicateNewNodes();"/>
+				<p:commandButton id="clearButton" type="button" value="#{cc.resourceBundleMap['commentbox.editor.clear']}" onclick="inlineEditorVar.clear()" icon="ui-icon-close" />
+				<p:commandButton id="cancelButton" type="button" value="#{cc.resourceBundleMap['commentbox.editor.cancel']}" onclick="#{cc.id}_commentboxWrapper.cancelEdit();" icon="ui-icon-close" />
 				<input id="currentEditComment" type="hidden" value="" name="currentEditComment"/>
 			</h:form>
 			
 			<h:form id="answerEditorForm" styleClass="answerEditorForm" style="height: 0px; overflow: hidden">
 				<p:editor id="inlineEditor" styleClass="commentseditor inlineEditor answerEditor" value="#{cc.answer_comment_editor_text}" controls="bold italic underline strikethrough | image youtube | link unlink | source" height="120" width="600" widgetVar="answerEditorVar" />
-				<p:commandButton id="submitButton" ajax="true" value="Save" icon="ui-icon-disk" update=":#{cc.cid(cc.innerWrapper)}" actionListener="#{cc.answerComment(cc.attrs.onCreateAnswer)}" onclick="#{cc.id}_commentboxWrapper.submitAnswer();#{cc.id}_commentboxWrapper.initDiffNodes();" oncomplete="answerEditorVar.clear();#{cc.id}_commentboxWrapper.reShowEditors();#{cc.id}_commentboxWrapper.indicateNewNodes();"/>
-				<p:commandButton id="clearButton" type="button" value="Clear" onclick="answerEditorVar.clear();" icon="ui-icon-close" />
-				<p:commandButton id="cancelButton" type="button" value="Cancel" onclick="#{cc.id}_commentboxWrapper.cancelCreateAnswer();" icon="ui-icon-close" />
+				<p:commandButton id="submitButton" ajax="true" value="#{cc.resourceBundleMap['commentbox.editor.save']}" icon="ui-icon-disk" update=":#{cc.cid(cc.innerWrapper)}" actionListener="#{cc.answerComment(cc.attrs.onCreateAnswer)}" onclick="#{cc.id}_commentboxWrapper.submitAnswer();#{cc.id}_commentboxWrapper.initDiffNodes();" oncomplete="answerEditorVar.clear();#{cc.id}_commentboxWrapper.reShowEditors();#{cc.id}_commentboxWrapper.indicateNewNodes();"/>
+				<p:commandButton id="clearButton" type="button" value="#{cc.resourceBundleMap['commentbox.editor.clear']}" onclick="answerEditorVar.clear();" icon="ui-icon-close" />
+				<p:commandButton id="cancelButton" type="button" value="#{cc.resourceBundleMap['commentbox.editor.cancel']}" onclick="#{cc.id}_commentboxWrapper.cancelCreateAnswer();" icon="ui-icon-close" />
 				<input id="currentAnswerComment" type="hidden" value="" name="currentAnswerComment"/>
 			</h:form>
 			
@@ -247,7 +247,7 @@
 		</p:outputPanel>
 		<script type="text/javascript">
 		//<![CDATA[
-			var #{cc.id}_commentboxWrapper = new commentboxWidget('#{cc.id}', '#{empty cc.attrs.currentUserID ? '': cc.attrs.currentUserID}');
+			var #{cc.id}_commentboxWrapper = new commentboxWidget('#{cc.id}', '#{empty cc.attrs.currentUserID ? '': cc.attrs.currentUserID}', JSON.parse('#{cc.messageBundleAsJSON}'));
 		//]]>
 		</script>
 	</cc:implementation>
