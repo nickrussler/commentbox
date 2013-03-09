@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import javax.el.ELContext;
@@ -39,7 +40,7 @@ import org.primefaces.push.PushContextFactory;
 })
 @FacesComponent(value = CommentBox.COMPONENT_TYPE)
 public class CommentBox extends UINamingContainer {
-
+	public static final String RESOURCE_BUNDLE = "info.whitebyte.component.commentbox.messages";
 	public static final String COMPONENT_TYPE = "info.whitebyte.component.commentbox";
 
 	enum PropertyKeys {
@@ -106,6 +107,10 @@ public class CommentBox extends UINamingContainer {
 
 	// Utils Start
 	
+	public ResourceBundle getCustomMessageBundle() {
+		return ResourceBundle.getBundle(RESOURCE_BUNDLE, FacesContext.getCurrentInstance().getViewRoot().getLocale());
+	}
+	
 	public static void log(String msg) {
 		FacesContext ctx = FacesContext.getCurrentInstance();
 		if (ctx.isProjectStage(ProjectStage.Development)) {
@@ -136,12 +141,12 @@ public class CommentBox extends UINamingContainer {
 		return me.invoke(elContext, params);
 	}
 	
-	private static String mapToJSON(Map<String, String> map) {
+	private static String mapToJSON(ResourceBundle bundle) {
 		String json = "{";
 		String iterator = "";
 		
-		for (String k : map.keySet()) {
-			json += iterator + "\"" + k + "\"" + ":" + "\"" + map.get(k) + "\"";
+		for (String k : bundle.keySet()) {
+			json += iterator + "\"" + k + "\"" + ":" + "\"" + bundle.getString(k) + "\"";
 			iterator = ",";
 		}
 		
@@ -397,7 +402,7 @@ public class CommentBox extends UINamingContainer {
 	public String getNew_comment_editor_text() {
 		// initialize here because getResourceBundleMap return null on construction time	
 		if (this.new_comment_editor_text == null) {
-			this.new_comment_editor_text = "<span style=\"font-family: Arial, Verdana; font-size: 13px;\"><font color=\"#666666\">" + this.getResourceBundleMap().get("commentbox.editor.notclicked") + "</font></span>";
+			this.new_comment_editor_text = "<span style=\"font-family: Arial, Verdana; font-size: 13px;\"><font color=\"#666666\">" + this.getCustomMessageBundle().getString("commentbox.editor.notclicked") + "</font></span>";
 		}
 		
 		return new_comment_editor_text;
@@ -446,6 +451,6 @@ public class CommentBox extends UINamingContainer {
 	}
 	
 	public String getMessageBundleAsJSON() {
-		return mapToJSON(this.getResourceBundleMap());
+		return mapToJSON(this.getCustomMessageBundle());
 	}
 }
