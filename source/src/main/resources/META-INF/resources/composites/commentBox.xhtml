@@ -9,8 +9,6 @@
 
 	<cc:interface componentType="info.whitebyte.component.commentbox">
 		<cc:attribute name="contextID" type="java.lang.String"/>
-		<cc:attribute name="emptyMessage" default="#{commentboxmsg['commentbox.comments.empty']}" type="java.lang.String"/>
-		<cc:attribute name="userNotLoggedIn" default="#{commentboxmsg['commentbox.user.empty']}" type="java.lang.String"/>
 		<cc:attribute name="comments" type="java.util.List" />		
 		<cc:attribute name="currentPage" type="java.lang.Long" />
 		<cc:attribute name="commentsPerPage" type="java.lang.Long" />
@@ -45,7 +43,7 @@
 	
 	<p:outputPanel styleClass="comments-#{cc.id} tr-commentbox comments-wrapper">
 			<p:outputPanel rendered="#{empty cc.attrs.currentUserID}">
-				<b>#{cc.attrs.userNotLoggedIn}</b>				
+				<b>#{commentboxmsg['commentbox.user.empty']}</b>				
 				<p:separator />
 			</p:outputPanel>
 	
@@ -70,7 +68,7 @@
 			</p:outputPanel>
 
 			<p:outputPanel binding="#{cc.innerWrapper}" id="innerWrapper">				
-				<p:outputPanel styleClass="emptyMessage" rendered="#{empty cc.attrs.comments}">#{cc.attrs.emptyMessage}</p:outputPanel>			
+				<p:outputPanel styleClass="emptyMessage" rendered="#{empty cc.attrs.comments}">#{commentboxmsg['commentbox.comments.empty']}</p:outputPanel>			
 				<h:form>
 					<p:commandButton value="Show # new Updates" styleClass="updateRootButton" actionListener="#{cc.fetchNewComments(cc.attrs.onFetchNewComments)}" update=":#{cc.cid(cc.innerWrapper)}" onclick="#{cc.id}_commentboxWrapper.initDiffNodes();" oncomplete="#{cc.id}_commentboxWrapper.indicateNewNodes();$('.updateRootButton').fadeOut('fast', function() {#{cc.id}_commentboxWrapper.reShowEditors();});#{cc.id}_commentboxWrapper.reShowEditors();" />
 				</h:form>

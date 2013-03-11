@@ -29,7 +29,7 @@ import org.primefaces.push.PushContextFactory;
  *
  * @author Nick Russler / last modified by $Author$
  * @version $Revision$
- * @since 0.7
+ * @since 0.0.1
  */
 @ResourceDependencies({
 	@ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
@@ -44,7 +44,7 @@ public class CommentBox extends UINamingContainer {
 	public static final String COMPONENT_TYPE = "info.whitebyte.component.commentbox";
 
 	enum PropertyKeys {
-		contextID, emptyMessage, comments, currentPage, commentsPerPage, commentCount, currentUserID, currentUserUsername, currentUserAvatarUrl, canEditAll, canDeleteAll, enableLiveFeatures
+		contextID, comments, currentPage, commentsPerPage, commentCount, currentUserID, currentUserUsername, currentUserAvatarUrl, canEditAll, canDeleteAll, enableLiveFeatures
 	}
 
 	String new_comment_editor_text;
