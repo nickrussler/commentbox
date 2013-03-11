@@ -33,6 +33,9 @@ Other users are notified on new comments, replies and when other users type.
 ## Download
 [Here](https://buildhive.cloudbees.com/job/nickrussler/job/commentbox/ws/source/target/commentbox-0.0.1-SNAPSHOT.jar) you can download the latest jar
 
+## Documetation
+Download the documentation [here](https://github.com/nickrussler/commentbox/raw/master/misc/documentation.pdf).
+
 ## First Steps
 
 I recomend to take a look at the [demo](https://github.com/nickrussler/commentbox/tree/master/demo-source) at first.
