@@ -16,9 +16,9 @@
 		<cc:attribute name="currentUserID" type="java.lang.Object" />
 		<cc:attribute name="currentUserUsername" type="java.lang.String" />
 		<cc:attribute name="currentUserAvatarUrl" type="java.lang.String" />
-		<cc:attribute name="canEditAll" type="java.lang.Boolean" />
-		<cc:attribute name="canDeleteAll" type="java.lang.Boolean" />
-		<cc:attribute name="enableLiveFeatures" default="true" type="java.lang.Boolean" />	
+		<cc:attribute name="canEditAll" default="false" type="java.lang.Boolean" />
+		<cc:attribute name="canDeleteAll" default="false" type="java.lang.Boolean" />
+		<cc:attribute name="enableLiveFeatures" default="false" type="java.lang.Boolean" />	
 		<cc:attribute name="onFetchNewComments" method-signature="void myAction()" />
 		<cc:attribute name="onFetchNewAnswers" method-signature="void myAction(info.whitebyte.component.commentbox.Comment)" />
 		<cc:attribute name="onPageChange" method-signature="void myAction(java.lang.Long)" />
