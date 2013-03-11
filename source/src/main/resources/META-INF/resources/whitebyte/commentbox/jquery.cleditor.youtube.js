@@ -4,7 +4,7 @@
  requires jQuery v1.4.2 or later, CLEditor WYSIWYG HTML Editor v1.3.0 or later
 
  Copyright 2012, Markus Horowski, TeraPix.de
- Licensed GPL Version 3 licenses.
+ Licensed for commentBox under Apache v2 with permission by Markus Horowski
 */
 
 (function($)
