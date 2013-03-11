@@ -34,7 +34,8 @@
 		<cc:attribute name="currentUserAvatarUrl" type="java.lang.String" />
 		<cc:attribute name="canEditAll" default="false" type="java.lang.Boolean" />
 		<cc:attribute name="canDeleteAll" default="false" type="java.lang.Boolean" />
-		<cc:attribute name="enableLiveFeatures" default="false" type="java.lang.Boolean" />	
+		<cc:attribute name="enableLiveFeatures" default="false" type="java.lang.Boolean" />
+		<cc:attribute name="editorControls" default="bold italic underline strikethrough | image youtube | link unlink | source" type="java.lang.String" />
 		<cc:attribute name="onFetchNewComments" method-signature="void myAction()" />
 		<cc:attribute name="onFetchNewAnswers" method-signature="void myAction(info.whitebyte.component.commentbox.Comment)" />
 		<cc:attribute name="onPageChange" method-signature="void myAction(java.lang.Long)" />
@@ -72,7 +73,7 @@
 	
 						<div style="float: left;">
 							<a class="username">#{cc.attrs.currentUserUsername}</a>						
-							<p:editor id="editor" styleClass="comment_editor comment_editor-height-hack" value="#{cc.new_comment_editor_text}" controls="bold italic underline strikethrough | image youtube | link unlink | source" height="120" width="600" widgetVar="editor"/>
+							<p:editor id="editor" styleClass="comment_editor comment_editor-height-hack" value="#{cc.new_comment_editor_text}" controls="#{cc.attrs.editorControls}" height="120" width="600" widgetVar="editor"/>
 				
 							<h:panelGrid styleClass="comment_editorButtons" columns="2" style="margin-top:3px;display: none;">
 								<p:commandButton id="submitButton" styleClass="submitButton" widgetVar="submitButtonVar" value="#{commentboxmsg['commentbox.editor.save']}" icon="ui-icon-disk" update=":#{cc.cid(cc.innerWrapper)}" onclick="submitButtonVar.disable();$('.ui-button-text', this).html('Submitting...');#{cc.id}_commentboxWrapper.initDiffNodes();" oncomplete="submitButtonVar.enable();$(#{cc.id}_commentboxWrapper.comment_id + ' .newCommentPanel .submitButton .ui-button-text').html('Save');editor.clear();#{cc.id}_commentboxWrapper.indicateNewNodes();#{cc.id}_commentboxWrapper.reShowEditors();#{cc.id}_commentboxWrapper.showNewRepliesText();" actionListener="#{cc.createComment(cc.attrs.onCreateComment)}" />
@@ -232,7 +233,7 @@
 			</p:outputPanel>
 			
 			<h:form id="inlineEditorForm" styleClass="inlineEditorForm" style="height: 0px; overflow: hidden">
-				<p:editor id="inlineEditor" styleClass="commentseditor inlineEditor" value="#{cc.edit_comment_editor_text}" controls="bold italic underline strikethrough | image youtube | link unlink | source" height="120" width="600" widgetVar="inlineEditorVar" />
+				<p:editor id="inlineEditor" styleClass="commentseditor inlineEditor" value="#{cc.edit_comment_editor_text}" controls="#{cc.attrs.editorControls}" height="120" width="600" widgetVar="inlineEditorVar" />
 				<p:commandButton id="submitButton" value="#{commentboxmsg['commentbox.editor.save']}" icon="ui-icon-disk" actionListener="#{cc.editComment(cc.attrs.onEditComment)}" onclick="#{cc.id}_commentboxWrapper.submitEdit();#{cc.id}_commentboxWrapper.initDiffNodes();" oncomplete="inlineEditorVar.clear();#{cc.id}_commentboxWrapper.indicateNewNodes();"/>
 				<p:commandButton id="clearButton" type="button" value="#{commentboxmsg['commentbox.editor.clear']}" onclick="inlineEditorVar.clear()" icon="ui-icon-close" />
 				<p:commandButton id="cancelButton" type="button" value="#{commentboxmsg['commentbox.editor.cancel']}" onclick="#{cc.id}_commentboxWrapper.cancelEdit();" icon="ui-icon-close" />
@@ -240,7 +241,7 @@
 			</h:form>
 			
 			<h:form id="answerEditorForm" styleClass="answerEditorForm" style="height: 0px; overflow: hidden">
-				<p:editor id="inlineEditor" styleClass="commentseditor inlineEditor answerEditor" value="#{cc.answer_comment_editor_text}" controls="bold italic underline strikethrough | image youtube | link unlink | source" height="120" width="600" widgetVar="answerEditorVar" />
+				<p:editor id="inlineEditor" styleClass="commentseditor inlineEditor answerEditor" value="#{cc.answer_comment_editor_text}" controls="#{cc.attrs.editorControls}" height="120" width="600" widgetVar="answerEditorVar" />
 				<p:commandButton id="submitButton" ajax="true" value="#{commentboxmsg['commentbox.editor.save']}" icon="ui-icon-disk" update=":#{cc.cid(cc.innerWrapper)}" actionListener="#{cc.answerComment(cc.attrs.onCreateAnswer)}" onclick="#{cc.id}_commentboxWrapper.submitAnswer();#{cc.id}_commentboxWrapper.initDiffNodes();" oncomplete="answerEditorVar.clear();#{cc.id}_commentboxWrapper.reShowEditors();#{cc.id}_commentboxWrapper.indicateNewNodes();"/>
 				<p:commandButton id="clearButton" type="button" value="#{commentboxmsg['commentbox.editor.clear']}" onclick="answerEditorVar.clear();" icon="ui-icon-close" />
 				<p:commandButton id="cancelButton" type="button" value="#{commentboxmsg['commentbox.editor.cancel']}" onclick="#{cc.id}_commentboxWrapper.cancelCreateAnswer();" icon="ui-icon-close" />
