@@ -35,7 +35,10 @@
 		<cc:attribute name="canEditAll" default="false" type="java.lang.Boolean" />
 		<cc:attribute name="canDeleteAll" default="false" type="java.lang.Boolean" />
 		<cc:attribute name="enableLiveFeatures" default="false" type="java.lang.Boolean" />
-		<cc:attribute name="editorControls" default="bold italic underline strikethrough | image youtube | link unlink | source" type="java.lang.String" />
+		<cc:attribute name="editorControls" default="bold italic underline strikethrough | icon | image youtube | link unlink | source" type="java.lang.String" />
+		<cc:attribute name="editorSmileyBase" default="#{resource['whitebyte:commentbox/editor-smileys/1.gif']}" type="java.lang.String" />
+		<cc:attribute name="editorSmileyCount" default="12" type="java.lang.String" />
+		<cc:attribute name="editorSmileyPopupWidth" default="60" type="java.lang.String" />
 		<cc:attribute name="onFetchNewComments" method-signature="void myAction()" />
 		<cc:attribute name="onFetchNewAnswers" method-signature="void myAction(info.whitebyte.component.commentbox.Comment)" />
 		<cc:attribute name="onPageChange" method-signature="void myAction(java.lang.Long)" />
@@ -52,13 +55,14 @@
 	<script>
 	//<![CDATA[
 	$(function(){
-		// The background image is set here because the el is not evaluated in the external js file..
+		// The images are set here because the el is not evaluated in the external js file..
 		$.cleditor.buttons.youtube.css.background = "URL(#{resource['whitebyte:commentbox/film-youtube.png']}) 50% 50% no-repeat";
+		initJQueryCLEditorIconPlugin("#{cc.attrs.editorSmileyBase}", #{cc.attrs.editorSmileyCount}, #{cc.attrs.editorSmileyPopupWidth});
 	});
 	//]]>
 	</script>
 	
-	<p:outputPanel styleClass="comments-#{cc.id} tr-commentbox comments-wrapper">
+	<p:outputPanel styleClass="comments-#{cc.id} tr-commentbox comments-wrapper">	
 			<p:outputPanel rendered="#{empty cc.attrs.currentUserID}">
 				<b>#{commentboxmsg['commentbox.user.empty']}</b>				
 				<p:separator />
