@@ -78,3 +78,4 @@ This project is open source and free, it is available under the [Apache v2 Licen
 
 * Fugue Icons - Yusuke Kamiyamane - http://p.yusukekamiyamane.com/
 * CLEditor YouTube Plugin v1.0.0 - Markus Horowski - http://www.terapix.de
+* TeamRot - The Group that developed the initial commentBox component at RWTH Aachen University. Members: Ahmet Yüksektepe, Arthur Otto, Kristjan Liiva, Nick Russler, Thomas Müller
