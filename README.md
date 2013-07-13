@@ -42,7 +42,7 @@ I recomend to take a look at the [demo](https://github.com/nickrussler/commentbo
 
 Just deploy the demo project in any AS with eclipse or your IDE of choice, and try out some features!
 
-### Extended Demo
+### Extended Demo - DEPRECATED
 
 After you played around with the demo you can start to use it immediatly or you can take a look at the [extended demo](https://github.com/nickrussler/commentbox/tree/master/extended-demo-source).
 
