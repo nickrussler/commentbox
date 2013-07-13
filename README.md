@@ -52,7 +52,7 @@ Because of that you need to create a datasource (commentboxDS) in the configs of
 
 Then deploy the demo project in any AS with eclipse or your IDE of choice.
 
-NOTE: The Extended Demo is not maintainded anymore, i will remove it in the future.
+NOTE: The Extended Demo is not maintained anymore, i will remove it in the future.
 
 
 ## Notice for JBoss usage
