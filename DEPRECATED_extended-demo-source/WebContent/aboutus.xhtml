@@ -1,0 +1,32 @@
+<ui:composition template="/WEB-INF/template/base_template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+	
+	<ui:define name="navigation_content">
+		<ul id="menu-menu">
+			<li class="menu-item">
+				<a href="#{userSession.MAIN_WEBSITE_URL}">
+					<span class="navLink">
+						Home
+					</span>
+				</a>
+			</li>
+			<li class="menu-item current-menu-item">
+				<a href="#{userSession.MAIN_WEBSITE_URL}about">
+					<span class="navLink">
+						About Us
+					</span>
+				</a>
+			</li>
+		</ul>
+	</ui:define>
+
+	<ui:define name="content">
+		<p:panel header="About Us">
+			Hier ein Foto ?			
+		</p:panel>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,209 @@
+/* Login Container (default to float:right) */
+#loginContainer {
+    position:relative;
+    float:right;
+    font-size:12px;
+}
+
+/* Login Button */
+#loginButton {
+	border: 1px solid #A8A8A8;
+	display: block;
+	background: #C4C4C4 url("/faces/javax.faces.resource/images/ui-bg_highlight-hard_80_c4c4c4_1x100.png?ln=primefaces-aristo") 50% 50% repeat-x;
+	background: #C4C4C4 linear-gradient(top, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
+	background: #C4C4C4 -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.8)), to(rgba(255, 255, 255, 0)));
+	background: #C4C4C4 -moz-linear-gradient(top, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
+	font-weight: bold;
+	color: #4F4F4F;
+	text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7);
+	border-radius: 2px;
+	cursor: pointer;
+	text-decoration: none;
+	float: right;
+}
+
+/* Login Button Text */
+#loginButton span {
+    color:#445058; 
+    font-size:14px; 
+    font-weight:bold; 
+    text-shadow:1px 1px #fff; 
+    padding: 1px 29px 9px 1px;
+    background:url("#{resource['images:loginArrow.png']}") no-repeat 43px 1px;
+    display: block;
+    position: relative;
+	top: 3px;
+	left: 4px;
+}
+
+/* Register Button */
+#registerButton {
+	border: 1px solid #A8A8A8;
+	display: block;
+	background: #C4C4C4 url("/faces/javax.faces.resource/images/ui-bg_highlight-hard_80_c4c4c4_1x100.png?ln=primefaces-aristo") 50% 50% repeat-x;
+	background: #C4C4C4 linear-gradient(top, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
+	background: #C4C4C4 -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.8)), to(rgba(255, 255, 255, 0)));
+	background: #C4C4C4 -moz-linear-gradient(top, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
+	font-weight: bold;
+	color: #4F4F4F;
+	text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.7);
+	border-radius: 2px;
+	cursor: pointer;
+	text-decoration: none;
+	float: right;
+}
+
+#registerButton:hover {
+	background: #C5C5C5 linear-gradient(top, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+	background: #C5C5C5 -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.6)), to(rgba(255, 255, 255, 0)));
+	background: #C5C5C5 -moz-linear-gradient(top, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+	-moz-box-shadow: 0 0 5px #C6C6C6;
+	-webkit-box-shadow: 0px 0px 8px #C6C6C6;
+	box-shadow: 0px 0px 8px #C6C6C6;
+}
+
+/* Register Button Text */
+#registerButton span {
+    color:#445058; 
+    font-size:14px; 
+    font-weight:bold; 
+    text-shadow:1px 1px #fff; 
+    padding:1px 29px 9px 1px;   
+    display:block;
+    position: relative;
+	top: 3px;
+	left: 12px;
+}
+
+/* Login Box */
+#loginBox {
+    position: absolute;
+    top:36px;
+    right: -10px;
+    display:none;
+    z-index:29;
+}
+
+#loginButton:hover {
+	background: #C5C5C5 linear-gradient(top, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+	background: #C5C5C5 -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.6)), to(rgba(255, 255, 255, 0)));
+	background: #C5C5C5 -moz-linear-gradient(top, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+	-moz-box-shadow: 0 0 5px #C6C6C6;
+	-webkit-box-shadow: 0px 0px 8px #C6C6C6;
+	box-shadow: 0px 0px 8px #C6C6C6;
+}
+
+/* If the Login Button has been clicked */    
+#loginButton.active {
+    border-radius:3px 3px 0 0;
+}
+
+#loginButton.active span {
+    
+}
+
+/* A Line added to overlap the border */
+#loginButton.active em {
+    position:absolute;
+    width:100%;
+    height:1px;
+    background:#d2e0ea;
+    bottom:-1px;
+}
+
+/* Login Form */
+#loginForm {
+    width:248px; 
+    border:1px solid grey;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    margin-top:-5px;
+    background: #C6C6C6;
+    padding:6px;
+}
+
+#loginForm fieldset {
+    margin:0 0 12px 0;
+    display:block;
+    border:0;
+    padding:0;
+}
+
+fieldset#body {
+    background:#fff;
+    border-radius:3px;
+    -moz-border-radius:3px;
+    padding:10px 13px;
+    margin:0;
+}
+
+#loginForm #checkbox {
+    width:auto;
+    margin:1px 9px 0 0;
+    float:left;
+    padding:0;
+    border:0;
+    *margin:-3px 9px 0 0; /* IE7 Fix */
+}
+
+#body label {
+    color:#3a454d;
+    margin:9px 0 0 0;
+    display:block;
+    float:left;
+}
+
+#loginForm #body fieldset label {
+    display:block;
+    float:none;
+    margin:0 0 6px 0;
+}
+
+/* Default Input */
+#loginForm input {
+    width:92%;
+    border:1px solid #899caa;
+    border-radius:3px;
+    -moz-border-radius:3px;
+    color:#3a454d;
+    font-weight:bold;
+    padding:8px 8px;
+    box-shadow:inset 0px 1px 3px #bbb;
+    -webkit-box-shadow:inset 0px 1px 3px #bbb;
+    -moz-box-shadow:inset 0px 1px 3px #bbb;
+    font-size:12px;
+}
+
+/* Sign In Button */
+#loginForm #login {
+    width:auto;
+    float:left;
+    background:#339cdf url(#{resource['images:loginbuttonbg.png']}) repeat-x;
+    color:#fff;
+    padding:7px 10px 8px 10px;
+    text-shadow:0px -1px #278db8;
+    border:1px solid #339cdf;
+    box-shadow:none;
+    -moz-box-shadow:none;
+    -webkit-box-shadow:none;
+    margin:0 12px 0 0;
+    cursor:pointer;
+    *padding:7px 2px 8px 2px; /* IE7 Fix */
+}
+
+/* Forgot your password */
+#loginForm span {
+    text-align:center;
+    display:block;
+    padding:7px 0 4px 0;
+}
+
+#loginForm span a {
+    color:#3a454d;
+    text-shadow:1px 1px #fff;
+    font-size:12px;
+}
+
+input:focus {
+    outline:none;
+}

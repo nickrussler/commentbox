@@ -1,0 +1,82 @@
+<pretty-config xmlns="http://ocpsoft.com/prettyfaces/3.3.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://ocpsoft.com/prettyfaces/3.3.0
+                                   		http://ocpsoft.com/xml/ns/prettyfaces/ocpsoft-pretty-faces-3.3.0.xsd">
+
+	<url-mapping id="home">
+		<pattern value="/" />
+		<view-id value="/faces/main.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="home01">
+		<pattern value="/projects/#{/[0-9]+/ page: main.currentpage}/"/>
+		<view-id value="/faces/main.xhtml" />
+	</url-mapping> 
+	
+	<url-mapping id="logout"> 
+		<pattern value="/logout" /> 
+		<view-id value="/faces/main.xhtml" />
+		<action>#{navigation.logout()}</action>
+	</url-mapping>
+	
+	<url-mapping id="add1">
+		<pattern value="/add" />
+		<view-id value="/faces/article_edit.xhtml" />
+	</url-mapping>
+	
+	<url-mapping id="add2">
+		<pattern value="/add/" />
+		<view-id value="/faces/article_edit.xhtml" />
+	</url-mapping>
+	
+	<url-mapping id="edit1">
+		<pattern value="/edit/#{articleEdit.article_id}" />
+		<view-id value="/faces/article_edit.xhtml" />
+	</url-mapping>
+	
+	<url-mapping id="edit2">
+		<pattern value="/edit/#{id: articleEdit.article_id}/" />
+		<view-id value="/faces/article_edit.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="aboutus1">
+		<pattern value="/about" />
+		<view-id value="/faces/aboutus.xhtml" />
+	</url-mapping>
+	
+	<url-mapping id="aboutus2">
+		<pattern value="/about/" />
+		<view-id value="/faces/aboutus.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="disclaimer1">
+		<pattern value="/disclaimer" />
+		<view-id value="/faces/disclaimer.xhtml" />
+	</url-mapping>	
+	
+	<url-mapping id="disclaimer2">
+		<pattern value="/disclaimer/" />
+		<view-id value="/faces/disclaimer.xhtml" />
+	</url-mapping>
+
+	<url-mapping id="articleshow0">
+		<pattern value="/project" />
+		<view-id value="/faces/article_edit.xhtml" />
+	</url-mapping>
+	<url-mapping id="articleshow1">
+		<pattern value="/project/#{articleView.article_id}" />
+		<view-id value="/faces/article_view.xhtml" />
+	</url-mapping>
+	<url-mapping id="articleshow2">
+		<pattern value="/project/#{id: articleView.article_id}/" />
+		<view-id value="/faces/article_view.xhtml" />
+	</url-mapping>
+	<url-mapping id="articleshow3">
+		<pattern value="/project/#{articleView.article_id}/#{title}" />
+		<view-id value="/faces/article_view.xhtml" />
+	</url-mapping>
+	<url-mapping id="articleshow4">
+		<pattern value="/project/#{articleView.article_id}/#{title}/" />
+		<view-id value="/faces/article_view.xhtml" />
+	</url-mapping>
+</pretty-config>
