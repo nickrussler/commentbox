@@ -1,3 +1,5 @@
+#NOTE: THIS PROJECT IS NOT MAINTAINED ANYMORE
+
 # Commentbox
 
 This is a jsf component that allows quick realization of a comment functionality with many features.
